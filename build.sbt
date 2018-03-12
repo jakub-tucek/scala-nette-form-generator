@@ -9,6 +9,8 @@ scalaVersion := "2.12.3"
 
 libraryDependencies += guice
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % Test
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.5" % "test"
+
 
 // Adds additional packages into Twirl
 //TwirlKeys.templateImports += "cvut.fit.controllers._"

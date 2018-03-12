@@ -4,7 +4,6 @@ package domain
   *
   * @author Jakub Tucek
   */
-class ParserOutput {
+class ParserInput {
 
 }
-
