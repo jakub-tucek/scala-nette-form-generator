@@ -13,7 +13,7 @@ object TableParser extends RegexParsers {
 
   private val apostrophe = opt("`")
   private val rowDefEnd = """,?""".r
-  private val name = """([^`\s]+)""".r
+  private val name = apostrophe ~> """([^`\s]+)""".r <~ apostrophe
 
   def parse(s: String) = {
     parseAll(expression, cleanScript(s))
@@ -21,13 +21,11 @@ object TableParser extends RegexParsers {
 
   private def expression = table ~ ((constraint | column) *)
 
-  private def column = columnName ~ """([^,]+)""".r ~ rowDefEnd
+  private def column = name <~ """([^,]+)""".r ~ rowDefEnd
 
-  private def columnName = apostrophe ~ name ~ apostrophe
+  private def constraint = """(PRIMARY|UNIQUE|CONSTRAINT|CHECK|FULLTEXT|FOREIGN|INDEX|KEY|ON|SPATIAL)([^,]+)""".r ~ rowDefEnd ^^ { _ => "" }
 
-  private def constraint = """(PRIMARY|UNIQUE|CONSTRAINT|CHECK|FULLTEXT|FOREIGN|INDEX|KEY|ON|SPATIAL)([^,]+)""".r ~ rowDefEnd
-
-  private def table = "CREATE TABLE" ~ apostrophe ~ name ~ apostrophe ~ "("
+  private def table = "CREATE TABLE" ~> name <~ "("
 
   private def cleanScript(s: String) = {
     s.replaceAll("#.*$", "")
