@@ -14,12 +14,18 @@ object TableParser extends RegexParsers {
   private val apostrophe = opt("`")
   private val rowDefEnd = """,?""".r
   private val name = apostrophe ~> """([^`\s]+)""".r <~ apostrophe
+  private val size = "(" ~> """[0-9]+""".r <~ ")"
+
 
   def parse(s: String) = {
     parseAll(expression, cleanScript(s))
   }
 
+  private def defaultVal = "DEFAULT" ~> ("NULL" | "'" ~> """[0-9]+""" <~ "'")
+
   private def expression = table ~ ((constraint | column) *)
+
+  private def required = "NOT " ~ "NULL" ^^ { _ => 'required }
 
   private def column = name <~ """([^,]+)""".r ~ rowDefEnd
 
