@@ -25,13 +25,13 @@ object TableParser extends RegexParsers {
     parseAll(expression, cleanScript(s))
   }
 
-  private def defaultVal = "DEFAULT" ~> ("NULL" | "'" ~> """[0-9]+""" <~ "'")
-
   private def expression = table ~ ((constraint | column) *)
 
-  private def required = "NOT " ~ "NULL" ^^ { _ => 'required }
+  private def defaultVal = "DEFAULT" ~> ("NULL" | "'" ~> """[^']+""".r <~ "'")
 
-  private def column = name ~ colType <~ """([^,]+)""".r ~ rowDefEnd
+  private def required = "NOT" ~ "NULL" ^^ { _ => "REQUIRED" }
+
+  private def column = name ~ colType ~ ((required | defaultVal) *) <~ """([^,]*)""".r ~ rowDefEnd
 
   private def constraint = """(PRIMARY|UNIQUE|CONSTRAINT|CHECK|FULLTEXT|FOREIGN|INDEX|KEY|ON|SPATIAL)([^,]+)""".r ~ rowDefEnd ^^ { _ => "" }
 
