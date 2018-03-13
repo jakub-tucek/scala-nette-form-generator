@@ -29,7 +29,7 @@ object TableParser extends RegexParsers {
 
   def apply(input: ParserInput): ParserOutput = {
     val cleanedScript = cleanScript(input.in)
-    val res = parseAll(expression, cleanedScript);
+    val res = parseAll(expression, cleanedScript)
     println(res)
     res match {
       case Success(result, _) => ParserOutputSuccess(result, input)
