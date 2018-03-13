@@ -31,7 +31,7 @@ object TableParser extends RegexParsers {
 
   private def required = "NOT" ~ "NULL" ^^ { _ => "REQUIRED" }
 
-  private def column = name ~ colType ~ ((required | defaultVal) *) <~ """([^,]*)""".r ~ rowDefEnd
+  private def column = name ~ colType ~ ((required | defaultVal | """([^,]+)""".r) *) <~ rowDefEnd
 
   private def constraint = """(PRIMARY|UNIQUE|CONSTRAINT|CHECK|FULLTEXT|FOREIGN|INDEX|KEY|ON|SPATIAL)([^,]+)""".r ~ rowDefEnd ^^ { _ => "" }
 
