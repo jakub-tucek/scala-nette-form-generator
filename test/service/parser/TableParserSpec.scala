@@ -59,7 +59,7 @@ class TableParserSpec extends FlatSpec {
 
 
   "TableParserSpec" should "Parse tables" in {
-    val a = TableParser.parse(new ParserInput(input))
+    val a = TableParser.apply(new ParserInput(input))
 
     assert(a.isInstanceOf[ParserOutputSuccess])
 

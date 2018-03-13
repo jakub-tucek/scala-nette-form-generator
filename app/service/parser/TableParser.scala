@@ -27,7 +27,7 @@ object TableParser extends RegexParsers {
 
   private def enumTypes = "(" ~> (enumType *) <~ ")" ^^ (t => ColumnEnumTypes(t))
 
-  def parse(input: ParserInput): ParserOutput = {
+  def apply(input: ParserInput): ParserOutput = {
     val cleanedScript = cleanScript(input.in)
     val res = parseAll(expression, cleanedScript);
     println(res)
