@@ -14,7 +14,11 @@ object TableParser extends RegexParsers {
   private val apostrophe = opt("`")
   private val rowDefEnd = """,?""".r
   private val name = apostrophe ~> """([^`\s]+)""".r <~ apostrophe
-  private val size = "(" ~> """[0-9]+""".r <~ ")"
+  private val size = "(" ~> """[0-9]+""".r <~ ")" ~ opt(",")
+
+  private val enumType = "'" ~> """[A-Z_]+""".r <~ """\',?""".r
+
+  private val colType = (("VARCHAR" | "TINYINT" | "INT") ~ size) | "TIMESTAMP" | ("ENUM" ~ "(" ~> (enumType *) <~ ")")
 
 
   def parse(s: String) = {
@@ -27,7 +31,7 @@ object TableParser extends RegexParsers {
 
   private def required = "NOT " ~ "NULL" ^^ { _ => 'required }
 
-  private def column = name <~ """([^,]+)""".r ~ rowDefEnd
+  private def column = name ~ colType <~ """([^,]+)""".r ~ rowDefEnd
 
   private def constraint = """(PRIMARY|UNIQUE|CONSTRAINT|CHECK|FULLTEXT|FOREIGN|INDEX|KEY|ON|SPATIAL)([^,]+)""".r ~ rowDefEnd ^^ { _ => "" }
 
