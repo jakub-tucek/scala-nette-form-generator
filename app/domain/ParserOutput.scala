@@ -1,34 +1,37 @@
 package domain
 
-/**
-  *
-  * @author Jakub Tucek
-  */
-class ParserOutput(val tables: List[Table]) {
+import service.parser.TableParser
 
+
+sealed trait ParserOutput
+
+case class ParserOutputSuccess(tables: List[Table], next: ParserInput) extends ParserOutput {
+  override def toString = s"ParserOutputSuccess($tables, $next)"
 }
 
-class Table(val name: String, val cols: List[Columns]) {
-
-  def this(firstName: String) {
-    this(firstName, "", 0)
-    println("\nNo last name or age given.")
-  }
+case class ParserOutputFailure(message: String, next: TableParser.Input) extends ParserOutput {
+  override def toString = s"ParserOutputFailure($message, $next)"
 }
 
-class Columns(val name: String, val options: List[ColumnOption]) {
+case class Table(name: String, cols: List[TableColumn]) {
 
+  override def toString = s"Table($name, $cols)"
 }
 
-abstract class ColumnOption
+case class TableColumn(name: String, colType: String, options: List[ColumnOption]) {
 
-case class ColumnDefaultValue(sender: String, title: String, body: String) extends ColumnOption
+  override def toString = s"TableColumn($name, $colType, $options)"
+}
 
-case class ColumnRequired(required: Boolean) extends ColumnOption
+sealed trait ColumnOption
+
+case class ColumnDefaultValueString(value: String) extends ColumnOption
+
+case class ColumnRequired() extends ColumnOption
 
 case class ColumnMaxLength(length: Integer) extends ColumnOption
 
 case class ColumnEnumTypes(types: List[String]) extends ColumnOption
 
-}
+case class ColumnUnrecognized(str: String) extends ColumnOption
 

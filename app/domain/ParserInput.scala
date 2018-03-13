@@ -4,6 +4,6 @@ package domain
   *
   * @author Jakub Tucek
   */
-class ParserInput {
+class ParserInput(val in: String) {
 
 }
