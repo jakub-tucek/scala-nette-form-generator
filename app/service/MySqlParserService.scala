@@ -14,7 +14,7 @@ class MySqlParserService extends ScriptParserService {
 
   override def parse(parserInput: ParserInput): ParserResult = {
     // TODO
-    new ParserResultFail(new ParserInput(), "asd")
+    new ParserResultFail(new ParserInput(""), "asd")
   }
 
 }

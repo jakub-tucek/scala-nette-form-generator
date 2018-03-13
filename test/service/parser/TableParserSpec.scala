@@ -1,5 +1,6 @@
 package service.parser
 
+import domain.{ParserInput, ParserOutputSuccess}
 import org.scalatest.FlatSpec
 
 /**
@@ -8,10 +9,65 @@ import org.scalatest.FlatSpec
   */
 class TableParserSpec extends FlatSpec {
 
-  "TableParserSpec" should "Parser tables" in {
-    val input = "SET NAMES utf8;\nSET time_zone = '+00:00';\nSET foreign_key_checks = 0;\nSET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';\nSET default_storage_engine = INNODB;\n\n\nDROP TABLE IF EXISTS key_code_history;\nDROP TABLE IF EXISTS page;\nDROP TABLE IF EXISTS user;\nDROP TABLE IF EXISTS user_info;\nDROP TABLE IF EXISTS notification;\nDROP TABLE IF EXISTS room;\nDROP TABLE IF EXISTS reservation;\nDROP TABLE IF EXISTS key_code;\nDROP TABLE IF EXISTS fileupload;\nDROP TABLE IF EXISTS notification;\nDROP TABLE IF EXISTS user_info;\n\nCREATE TABLE `user` (\n  `id`             INT(11)      NOT NULL                 AUTO_INCREMENT,\n  `firstName`      VARCHAR(255)                          DEFAULT NULL,\n  `lastName`       VARCHAR(255)                          DEFAULT NULL,\n  `email`          VARCHAR(255) NOT NULL,\n  `role`           ENUM ('USER', 'ADMIN', 'SUPER_ADMIN') DEFAULT 'USER',\n  `password`       VARCHAR(255) NOT NULL,\n  `activation_key` VARCHAR(255)                          DEFAULT NULL,\n  `activated`      TINYINT(4)                            DEFAULT '0',\n  `member`         TINYINT(4)                            DEFAULT '0',\n  `free_hours`     INT(11)                               DEFAULT '2',\n  `disabled`       TINYINT(4)                            DEFAULT '0',\n  `created_at`     TIMESTAMP                           DEFAULT CURRENT_TIMESTAMP,\n  `updated_at`     TIMESTAMP                           DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  `key_code_id`    INT(11),\n  `user_info_id`   INT(11),\n  `deleted`        TINYINT(4)                            DEFAULT '0',\n  PRIMARY KEY (`id`),\n  UNIQUE KEY `user_id_uindex` (`id`),\n  UNIQUE KEY `user_key_code_id_uindex` (`key_code_id`),\n  UNIQUE KEY `user_email_uindex` (`email`),\n  CONSTRAINT user_key_code_id_fk FOREIGN KEY (key_code_id) REFERENCES key_code (id) ON DELETE CASCADE,\n  CONSTRAINT user_user_info_id_fk FOREIGN KEY (user_info_id) REFERENCES user_info (id) ON DELETE CASCADE\n);"
+  val input =
+    """
+      |SET NAMES utf8;
+      |SET time_zone = '+00:00';
+      |SET foreign_key_checks = 0;
+      |SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
+      |SET default_storage_engine = INNODB;
+      |
+      |
+      |DROP TABLE IF EXISTS key_code_history;
+      |DROP TABLE IF EXISTS page;
+      |DROP TABLE IF EXISTS user;
+      |DROP TABLE IF EXISTS user_info;
+      |DROP TABLE IF EXISTS notification;
+      |DROP TABLE IF EXISTS room;
+      |DROP TABLE IF EXISTS reservation;
+      |DROP TABLE IF EXISTS key_code;
+      |DROP TABLE IF EXISTS fileupload;
+      |DROP TABLE IF EXISTS notification;
+      |DROP TABLE IF EXISTS user_info;
+      |
+      |CREATE TABLE `user` (
+      |  `id`             INT(11)      NOT NULL                 AUTO_INCREMENT,
+      |  `lastName`       VARCHAR(255)                          DEFAULT NULL,
+      |  `email`          VARCHAR(255) NOT NULL,
+      |  `role`           ENUM ('USER', 'ADMIN', 'SUPER_ADMIN') DEFAULT 'USER',
+      |  `activation_key` VARCHAR(255)                          DEFAULT NULL,
+      |  `activated`      TINYINT(4)                            DEFAULT '0',
+      |  `free_hours`     INT(11)                               DEFAULT '2',
+      |  `disabled`       TINYINT(4)                            DEFAULT '0',
+      |  `created_at`     TIMESTAMP                           DEFAULT CURRENT_TIMESTAMP,
+      |  `updated_at`     TIMESTAMP                           DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      |  `key_code_id`    INT(11),
+      |  `deleted`        TINYINT(4)                            DEFAULT '0',
+      |  PRIMARY KEY (`id`),
+      |  UNIQUE KEY `user_id_uindex` (`id`),
+      |  CONSTRAINT user_user_info_id_fk FOREIGN KEY (user_info_id) REFERENCES user_info (id) ON DELETE CASCADE
+      |);
+      |CREATE TABLE `key_code` (
+      |  `id`         INT(11) NOT NULL AUTO_INCREMENT,
+      |  `key_code`   VARCHAR(100),
+      |  `desc`       VARCHAR(255),
+      |  `created_at` TIMESTAMP        DEFAULT CURRENT_TIMESTAMP,
+      |  `updated_at` TIMESTAMP        DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      |  PRIMARY KEY (`id`)
+      |);
+    """.stripMargin
 
-    println(TableParser.parse(input))
+
+  "TableParserSpec" should "Parse tables" in {
+    val a = TableParser.parse(new ParserInput(input))
+
+    assert(a.isInstanceOf[ParserOutputSuccess])
+
+    a match {
+      case s: ParserOutputSuccess => {
+        assert(s.tables.nonEmpty)
+      }
+    }
   }
 }
 

@@ -12,11 +12,11 @@ import scala.util.parsing.combinator.RegexParsers
   * @author Jakub Tucek
   */
 object TableParser extends RegexParsers {
-  override protected val whiteSpace: Regex = """(\s|;.*)+""".r
+  override protected val whiteSpace: Regex = """(\s|;)+""".r
 
   private val apostrophe = opt("`")
   private val rowDefEnd = """,?""".r
-  private val textUntilComma = """([^,]+)""".r
+  private val textUntilComma = """.+?(?=(\)(;|$)|,))""".r
   private val name = apostrophe ~> """([^`\s]+)""".r <~ apostrophe
   private val intValue = "(" ~> """[0-9]+""".r <~ ")" ~ opt(",")
   private val enumType = "'" ~> """[A-Z_]+""".r <~ """\',?""".r
@@ -27,9 +27,17 @@ object TableParser extends RegexParsers {
 
   private def enumTypes = "(" ~> (enumType *) <~ ")" ^^ (t => ColumnEnumTypes(t))
 
-  private def expression = rep(table)
+  def parse(input: ParserInput): ParserOutput = {
+    val cleanedScript = cleanScript(input.in)
+    val res = parseAll(expression, cleanedScript);
+    println(res)
+    res match {
+      case Success(result, _) => ParserOutputSuccess(result, input)
+      case NoSuccess(msg, in) => ParserOutputFailure(msg, in)
+    }
+  }
 
-  private def unknownColOption: Parser[ColumnUnrecognized] = textUntilComma ^^ (u => ColumnUnrecognized(u))
+  private def expression: Parser[List[Table]] = rep(table)
 
   private def defaultValue: Parser[ColumnDefaultValueString] = "DEFAULT" ~> ("NULL" | defaultValueString) ^^ { v => ColumnDefaultValueString(v) }
 
@@ -46,19 +54,12 @@ object TableParser extends RegexParsers {
   private def constraint = """(PRIMARY|UNIQUE|CONSTRAINT|CHECK|FULLTEXT|FOREIGN|INDEX|KEY|ON|SPATIAL)""".r ~ textUntilComma ~ rowDefEnd ^^ (_ => Nil)
 
   private def table: Parser[Table] = {
-    "CREATE TABLE" ~> name ~ "(" ~ rep(columnTyped) <~ rep(constraint) ^^ { case n ~ _ ~ cols => Table(n, cols) }
-  }
-
-  def parse(input: ParserInput) = {
-    parseAll(expression, cleanScript(input.in)) match {
-      case Success(result, _) => ParserOutputSuccess(result, input)
-      case NoSuccess(msg, in) => ParserOutputFailure(msg, in)
-    }
+    "CREATE TABLE" ~> name ~ "(" ~ rep(columnTyped) <~ rep(constraint) <~ opt(")") ^^ { case n ~ _ ~ cols => Table(n, cols) }
   }
 
   private def cleanScript(s: String) = {
     s.replaceAll("#.*$", "")
-      .replaceAll("\n", "")
+      .replaceAll("\n|\r", "")
       .replaceAll("$\\s+", "")
       .replaceAll("\\s+", " ")
       .split(";")
@@ -67,4 +68,6 @@ object TableParser extends RegexParsers {
       }
       .mkString(";")
   }
+
+  private def unknownColOption: Parser[ColumnUnrecognized] = """[A-Z_]+""".r ^^ (u => ColumnUnrecognized(u))
 }
