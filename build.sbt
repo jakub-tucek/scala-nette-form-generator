@@ -7,11 +7,8 @@ version in ThisBuild := "1.0-SNAPSHOT"
 
 scalaVersion in ThisBuild := "2.12.4"
 
-// Adds additional packages into Twirl
-//TwirlKeys.templateImports += "cvut.fit.controllers._"
-
-// Adds additional packages into conf/routes
-// play.sbt.routes.RoutesKeys.routesImport += "cvut.fit.binders._"
+libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % Test
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.5" % "test"
 
 lazy val web = (project in file("web"))
   .settings(
@@ -31,16 +28,14 @@ lazy val web = (project in file("web"))
   .enablePlugins(ScalaJSPlugin, ScalaJSBundlerPlugin, ScalaJSWeb)
 
 
-lazy val server = (project in file("app"))
+lazy val server = (project in file("server"))
   .settings(
     name := (name in ThisBuild).value,
     WebKeys.exportedMappings in Assets := Seq(),
     libraryDependencies ++= Seq(
       guice,
       "com.github.t3hnar" %% "scala-bcrypt" % bcrypt,
-      "org.scalactic" %% "scalactic" % scalactic,
-      "org.scalatestplus.play" %% "scalatestplus-play" % scalatestplus % Test,
-      "org.scalatest" %% scalatest % scalatest % "test"
+      "org.scalactic" %% "scalactic" % scalactic
     ),
     scalaJSProjects := Seq(web),
     pipelineStages in Assets := Seq(scalaJSPipeline, digest, gzip),
