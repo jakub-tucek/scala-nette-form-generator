@@ -18,7 +18,8 @@ lazy val web = (project in file("web"))
     libraryDependencies ++= Seq(
       "com.github.japgolly.scalajs-react" %%% "core" % scalajsReact,
       "com.github.japgolly.scalajs-react" %%% "extra" % scalajsReact,
-      "org.scala-js" %%% "scalajs-dom" % scalajsDom
+      "org.scala-js" %%% "scalajs-dom" % scalajsDom,
+      "io.github.cquiroz" %%% "scala-java-time" % scalaJavaTime
     ),
     npmDependencies in Compile ++= Seq(
       "react" -> react,

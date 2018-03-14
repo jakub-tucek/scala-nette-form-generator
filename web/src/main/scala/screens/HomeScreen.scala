@@ -9,6 +9,10 @@ import models.Locs.Loc
 
 object HomeScreen extends HtmlTags {
 
+  case class Props(c: RouterCtl[Loc])
+
+  case class State()
+
   private val component = ScalaComponent
     .builder[Props]("HomeScreen")
     .initialState(State())
@@ -17,10 +21,6 @@ object HomeScreen extends HtmlTags {
     .build
 
   def apply(c: RouterCtl[Loc]) = component(Props(c))
-
-  case class Props(c: RouterCtl[Loc])
-
-  case class State()
 
   class Backend($: BackendScope[Props, State]) {
 
@@ -35,11 +35,9 @@ object HomeScreen extends HtmlTags {
       <.div(
         <.h2("Lorem Ipsum"),
         <.div(
-          "asd",
           OffsetDateTime.now.toString
         )
       )
     }
   }
-
 }

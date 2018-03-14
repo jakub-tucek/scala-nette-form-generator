@@ -3,11 +3,10 @@ package services
 import org.scalajs.dom.raw.File
 
 class AjaxClient(files: Map[String, File])
+/*extends autowire.Client[String,
+  upickle.default.Reader,
+  upickle.default.Writer]*/ {
 
-//  extends autowire.Client[String,
-//    upickle.default.Reader,
-//    upickle.default.Writer] {
-//
 //  override def doCall(req: Request): Future[String] = {
 //
 //    val promise = Promise[XMLHttpRequest]
@@ -44,10 +43,8 @@ class AjaxClient(files: Map[String, File])
 }
 
 object AjaxClient {
-  def apply[Trait] = new AjaxClient(Map.empty)[Trait]
-
-  def apply[Trait](files: Map[String, File]) = new AjaxClient(files)[Trait]
-
-  def apply[Trait](files: (String, File)*) = new AjaxClient(files.toMap)[Trait]
+  //  def apply[Trait]                           = new AjaxClient(Map.empty)[Trait]
+  //  def apply[Trait](files: Map[String, File]) = new AjaxClient(files)[Trait]
+  //  def apply[Trait](files: (String, File)*)   = new AjaxClient(files.toMap)[Trait]
 }
 
