@@ -10,3 +10,6 @@ target
 .project
 .settings
 .g8
+project/target
+build
+.gradle/
