@@ -2,16 +2,14 @@ package components
 
 import java.time.OffsetDateTime
 
-import components.LayoutComponent.{<, ^}
 import japgolly.scalajs.react.ScalaComponent
 import japgolly.scalajs.react.vdom.html_<^._
-import utils.HtmlTags
 
 /**
   *
   * @author Jakub Tucek
   */
-object NavComponent extends HtmlTags {
+object NavComponent {
 
   private val component = ScalaComponent.builder[String]("HelloMessage")
     .render(_ => <.nav(

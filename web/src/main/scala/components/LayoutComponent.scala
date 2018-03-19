@@ -1,9 +1,6 @@
 package components
 
-import java.time.OffsetDateTime
-
 import _root_.utils.HtmlTags
-import components.NavComponent.{<, ^}
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.extra.router.{Resolution, RouterCtl}
 import models.Locs.Loc
@@ -25,13 +22,26 @@ object LayoutComponent extends HtmlTags {
 
 
     def render(props: Props, state: State) = {
-      <.div(
+      <.span(
         NavComponent(),
         <.div(
-          props.r.render()
-        ),
-        <.div(^.cls := "footer")(
-          <.button(^.onClick --> Callback(org.scalajs.dom.window.location.replace("/logout")))("logout")
+          ^.cls := "container-fluid",
+          <.div(
+            ^.cls := "row",
+            SidebarComponent(),
+            <.main(
+              ^.role := "main",
+              ^.cls := "col-md-9 ml-sm-auto col-lg-10 pt-3 px-4",
+              <.div(
+                ^.cls := "d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom",
+                <.h1(
+                  ^.cls := "h2",
+                  "Nette generator"
+                )
+              ),
+              props.r.render()
+            )
+          )
         )
       )
     }
