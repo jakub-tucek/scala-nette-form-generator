@@ -1,7 +1,6 @@
 package service.parser
 
 import domain.{ParserInput, ParserOutputSuccess}
-import org.scalatest.FlatSpec
 
 /**
   *
