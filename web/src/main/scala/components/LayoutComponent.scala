@@ -1,6 +1,9 @@
 package components
 
+import java.time.OffsetDateTime
+
 import _root_.utils.HtmlTags
+import components.NavComponent.{<, ^}
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.extra.router.{Resolution, RouterCtl}
 import models.Locs.Loc
@@ -20,8 +23,10 @@ object LayoutComponent extends HtmlTags {
 
     def mounted() = Callback.empty
 
+
     def render(props: Props, state: State) = {
       <.div(
+        NavComponent(),
         <.div(
           props.r.render()
         ),
