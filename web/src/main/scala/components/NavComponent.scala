@@ -29,5 +29,5 @@ object NavComponent {
     )
     ).build
 
-  def apply() = component("")
+  def apply() = component()
 }

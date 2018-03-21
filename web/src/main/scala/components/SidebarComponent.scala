@@ -24,5 +24,5 @@ object SidebarComponent {
       )
     )).build
 
-  def apply() = component("")
+  def apply() = component()
 }

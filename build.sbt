@@ -23,7 +23,9 @@ lazy val web = (project in file("web"))
       "react-dom" -> react
     )
   )
+  .dependsOn(sharedJS)
   .enablePlugins(ScalaJSPlugin, ScalaJSBundlerPlugin, ScalaJSWeb)
+
 
 
 lazy val server = (project in file("server"))
@@ -41,5 +43,13 @@ lazy val server = (project in file("server"))
     pipelineStages in Assets := Seq(scalaJSPipeline, digest, gzip),
     routesGenerator := InjectedRoutesGenerator
   )
+  .dependsOn(sharedJVM)
   .enablePlugins(PlayScala, WebScalaJSBundlerPlugin, JavaServerAppPackaging)
 
+lazy val shared = (crossProject.crossType(CrossType.Pure) in file("shared"))
+  .jsConfigure(_.enablePlugins(ScalaJSPlugin))
+  .jsSettings()
+
+lazy val sharedJVM = shared.jvm
+
+lazy val sharedJS = shared.js
