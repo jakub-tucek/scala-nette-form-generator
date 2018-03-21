@@ -11,7 +11,7 @@ import japgolly.scalajs.react.vdom.html_<^._
   */
 object NavComponent {
 
-  private val component = ScalaComponent.builder[String]("HelloMessage")
+  private val component = ScalaComponent.builder[Unit]("HelloMessage")
     .render(_ => <.nav(
       ^.cls := "navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0",
       <.a (

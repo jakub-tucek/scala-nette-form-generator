@@ -9,7 +9,7 @@ import japgolly.scalajs.react.vdom.html_<^._
   */
 object SidebarComponent {
 
-  private val component = ScalaComponent.builder[String]("SidebarComponent")
+  private val component = ScalaComponent.builder[Unit]("SidebarComponent")
     .render(_ => <.nav(
       ^.cls := "col-md-2 d-none d-md-block bg-light sidebar",
       <.div(
