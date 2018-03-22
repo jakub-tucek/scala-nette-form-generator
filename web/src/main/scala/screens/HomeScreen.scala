@@ -1,7 +1,5 @@
 package screens
 
-import java.time.OffsetDateTime
-
 import autowire._
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.extra.router.RouterCtl
@@ -15,14 +13,14 @@ object HomeScreen extends HtmlTags {
 
   case class Props(c: RouterCtl[Loc])
 
-  case class State()
-
   private val component = ScalaComponent
     .builder[Props]("HomeScreen")
-    .initialState(State())
+    .initialState(State(""))
     .renderBackend[Backend]
     .componentDidMount(_.backend.mounted())
     .build
+
+  case class State(time: String)
 
   def apply(c: RouterCtl[Loc]) = component(Props(c))
 
@@ -30,7 +28,7 @@ object HomeScreen extends HtmlTags {
 
     def mounted() = Callback {
       AjaxClient[WiredApi].now().call().foreach {
-        s: String => println(s)
+        s: String => $.setState(State(s)).runNow()
       }
     }
 
@@ -38,7 +36,7 @@ object HomeScreen extends HtmlTags {
       <.div(
         <.h2("Lorem Ipsum"),
         <.div(
-          OffsetDateTime.now.toString
+          "Time is: " + state.time
         )
       )
     }
