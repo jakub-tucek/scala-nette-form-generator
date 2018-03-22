@@ -14,8 +14,8 @@ class AjaxClient extends autowire.Client[Json, Decoder, Encoder] {
 
   override def doCall(req: Request): Future[Json] = {
     dom.ext.Ajax.post(
-      url = "http://localhost:9000/api/" + req.path.mkString("/")
-      , data = {
+      url = "http://localhost:9000/api/" + req.path.mkString("/"),
+      data = {
         val d: String = Json.fromFields(req.args).noSpaces
         d
       }
