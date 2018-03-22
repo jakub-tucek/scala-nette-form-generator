@@ -12,7 +12,11 @@ object LayoutComponent extends HtmlTags {
   case class State()
 
   private val component =
-    ScalaComponent.builder[Props]("LayoutComponent").initialState(State()).renderBackend[Backend].componentDidMount(_.backend.mounted()).build
+    ScalaComponent.builder[Props]("LayoutComponent")
+      .initialState(State())
+      .renderBackend[Backend]
+      .componentDidMount(_.backend.mounted())
+      .build
 
   def apply(c: RouterCtl[Loc], r: Resolution[Loc]) = component(Props(c, r))
 
