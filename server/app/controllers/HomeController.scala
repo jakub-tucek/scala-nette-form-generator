@@ -45,7 +45,7 @@ class HomeController @Inject()(val api: WiredApiService, cc: ControllerComponent
           procedureCallRouter(procedureCallRequest)
         case Left(v) =>
           println("Error" + v)
-          Ok("Failed" + v).as("application/json").asFuture
+          Ok("Request failed: " + v).as("application/json").asFuture
       }
     }
   }
