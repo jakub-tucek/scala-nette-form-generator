@@ -43,8 +43,10 @@ class AjaxClient(files: Map[String, File])
 }
 
 object AjaxClient {
-  //  def apply[Trait]                           = new AjaxClient(Map.empty)[Trait]
-  //  def apply[Trait](files: Map[String, File]) = new AjaxClient(files)[Trait]
-  //  def apply[Trait](files: (String, File)*)   = new AjaxClient(files.toMap)[Trait]
+  def apply[Trait] = new AjaxClient(Map.empty)[Trait]
+
+  def apply[Trait](files: Map[String, File]) = new AjaxClient(files)[Trait]
+
+  def apply[Trait](files: (String, File)*) = new AjaxClient(files.toMap)[Trait]
 }
 

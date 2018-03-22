@@ -1,13 +1,13 @@
 package shared.service
 
-import java.time.OffsetDateTime
+import java.time.LocalDateTime
 
-import shared.model.WiredApiModel.ApiResult;
+import shared.model.WiredApiModel.ApiResult
 
 /**
- * @author Jakub Tucek
- */
+  * @author Jakub Tucek
+  */
 trait WiredApi {
 
-  def now(): ApiResult[OffsetDateTime]
+  def now(): ApiResult[LocalDateTime]
 }
