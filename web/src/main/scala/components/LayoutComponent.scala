@@ -1,9 +1,10 @@
 package components
 
-import _root_.utils.HtmlTags
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.extra.router.{Resolution, RouterCtl}
+import japgolly.scalajs.react.vdom.HtmlTags
 import models.Locs.Loc
+import japgolly.scalajs.react.vdom.html_<^._
 
 object LayoutComponent extends HtmlTags {
 

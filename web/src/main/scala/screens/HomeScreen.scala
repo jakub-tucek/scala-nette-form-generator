@@ -2,9 +2,10 @@ package screens
 
 import java.time.OffsetDateTime
 
-import _root_.utils.HtmlTags
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.extra.router.RouterCtl
+import japgolly.scalajs.react.vdom.HtmlTags
+import japgolly.scalajs.react.vdom.html_<^._
 import models.Locs.Loc
 
 object HomeScreen extends HtmlTags {
