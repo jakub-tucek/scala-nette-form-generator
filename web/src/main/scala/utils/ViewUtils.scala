@@ -6,14 +6,19 @@ import java.time.format.DateTimeFormatter
 
 import org.scalajs.dom.experimental.intl.DateTimeFormatOptions
 
+import scala.scalajs.js
+import scala.scalajs.js.Date
+
 /**
   *
   * @author Jakub Tucek
   */
 object ViewUtils {
 
-  private val format = DateTimeFormatter.ofPattern("DD. MM. YYYY HH:mm")
+  def formatDate(dateTime: LocalDateTime): String = {
+    val jsDate = new Date(Date.parse(dateTime.toString()))
+    jsDate.toLocaleString
+  }
 
-  def formatDate(dateTime: LocalDateTime): String = dateTime.format(format)
 
 }
