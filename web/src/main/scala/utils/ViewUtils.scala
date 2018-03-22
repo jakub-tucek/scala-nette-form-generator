@@ -20,5 +20,4 @@ object ViewUtils {
     jsDate.toLocaleString
   }
 
-
 }
