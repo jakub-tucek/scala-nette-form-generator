@@ -49,6 +49,14 @@ lazy val server = (project in file("server"))
   .enablePlugins(PlayScala, WebScalaJSBundlerPlugin, JavaServerAppPackaging)
 
 lazy val shared = (crossProject.crossType(CrossType.Pure) in file("shared"))
+  .settings(
+    libraryDependencies ++= Seq(
+      "com.lihaoyi" %%% "autowire" % autowire,
+      "io.circe" %%% "circe-core" % circe,
+      "io.circe" %%% "circe-generic" % circe,
+      "io.circe" %%% "circe-parser" % circe
+    )
+  )
   .jsConfigure(_.enablePlugins(ScalaJSPlugin))
   .jsSettings()
 

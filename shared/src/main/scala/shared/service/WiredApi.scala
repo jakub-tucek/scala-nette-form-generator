@@ -1,13 +1,11 @@
 package shared.service
 
-import java.time.LocalDateTime
-
-import shared.model.WiredApiModel.ApiResult
+import scala.concurrent.Future
 
 /**
   * @author Jakub Tucek
   */
 trait WiredApi {
 
-  def now(): ApiResult[LocalDateTime]
+  def now(): Future[String]
 }

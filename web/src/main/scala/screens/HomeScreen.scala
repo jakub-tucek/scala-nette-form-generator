@@ -2,11 +2,14 @@ package screens
 
 import java.time.OffsetDateTime
 
+import autowire._
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.extra.router.RouterCtl
 import japgolly.scalajs.react.vdom.HtmlTags
 import japgolly.scalajs.react.vdom.html_<^._
 import models.Locs.Loc
+import services.AjaxClient
+import shared.service.WiredApi
 
 object HomeScreen extends HtmlTags {
 
@@ -26,10 +29,9 @@ object HomeScreen extends HtmlTags {
   class Backend($: BackendScope[Props, State]) {
 
     def mounted() = Callback {
-      //      AjaxClient[WiredApi].now().call().foreach {
-      //        case Right(time) => println(time.toString)
-      //        case Left(e)     => org.scalajs.dom.window.alert(e.toString)
-      //      }
+      AjaxClient[WiredApi].now().call().foreach {
+        s: String => println(s)
+      }
     }
 
     def render(props: Props, state: State): VdomTag = {
@@ -41,4 +43,5 @@ object HomeScreen extends HtmlTags {
       )
     }
   }
+
 }

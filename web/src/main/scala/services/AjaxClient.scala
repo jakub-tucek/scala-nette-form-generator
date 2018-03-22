@@ -1,52 +1,42 @@
 package services
 
-import org.scalajs.dom.raw.File
 
-class AjaxClient(files: Map[String, File])
-/*extends autowire.Client[String,
-  upickle.default.Reader,
-  upickle.default.Writer]*/ {
+import io.circe.parser._
+import io.circe.syntax._
+import io.circe.{Decoder, Encoder, Json}
+import org.scalajs.dom
 
-//  override def doCall(req: Request): Future[String] = {
-//
-//    val promise = Promise[XMLHttpRequest]
-//    val xhr     = new dom.XMLHttpRequest
-//    xhr.onreadystatechange = (e: dom.Event) => {
-//      if (xhr.readyState == dom.XMLHttpRequest.DONE) {
-//        promise.success(xhr)
-//      }
-//    }
-//
-//    xhr.onerror = { e: dom.ErrorEvent =>
-//      promise.failure(AjaxException(xhr))
-//    }
-//
-//    //start upload
-//    val formData = new FormData()
-//
-//    formData.append("data", upickle.default.write(req.args))
-//    files.foreach {
-//      case (key, file) => formData.append(key, file)
-//    }
-//    xhr.open("POST", "/wired/" + req.path.mkString("/"), true)
-//    xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
-//    xhr.send(formData)
-//
-//    promise.future.map(_.responseText)
-//  }
-//
-//  def write[Result: upickle.default.Writer](r: Result): String =
-//    upickle.default.write(r)
-//
-//  def read[Result: upickle.default.Reader](p: String): Result =
-//    upickle.default.read[Result](p)
+import scala.concurrent.Future
+import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
+
+
+class AjaxClient extends autowire.Client[Json, Decoder, Encoder] {
+
+  override def doCall(req: Request): Future[Json] = {
+    dom.ext.Ajax.post(
+      url = "http://localhost:9000/api/" + req.path.mkString("/")
+      , data = {
+        val d: String = Json.fromFields(req.args).noSpaces
+        d
+      }
+    ).map(r => {
+      parse(r.responseText).right.get
+    })
+  }
+
+  override def write[AnyClassToWrite: Encoder](obj: AnyClassToWrite): Json = {
+    val w = obj.asJson
+    w
+  }
+
+  override def read[AnyClassToRead: Decoder](json: Json): AnyClassToRead = {
+    val e = json.as[AnyClassToRead]
+    val r = e.right.get
+    r
+  }
+
 }
 
 object AjaxClient {
-  def apply[Trait] = new AjaxClient(Map.empty)[Trait]
-
-  def apply[Trait](files: Map[String, File]) = new AjaxClient(files)[Trait]
-
-  def apply[Trait](files: (String, File)*) = new AjaxClient(files.toMap)[Trait]
+  def apply[Trait] = new AjaxClient()[Trait]
 }
-
