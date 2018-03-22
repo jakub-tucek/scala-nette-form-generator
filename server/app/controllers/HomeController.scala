@@ -1,6 +1,5 @@
 package controllers
 
-import autowire.Core
 import io.circe.Json
 import io.circe.parser._
 import javax.inject._
@@ -8,6 +7,7 @@ import play.api.i18n.I18nSupport
 import play.api.mvc._
 import service.{AutoWireServer, WiredApiService}
 import shared.service.WiredApi
+import shared.utils.Implicits
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -18,7 +18,9 @@ import scala.concurrent.Future
   */
 @Singleton
 class HomeController @Inject()(val api: WiredApiService, cc: ControllerComponents)
-  extends AbstractController(cc) with I18nSupport {
+  extends AbstractController(cc)
+    with I18nSupport
+    with Implicits {
 
   /**
     * Create an Action to render an HTML page.
@@ -37,8 +39,14 @@ class HomeController @Inject()(val api: WiredApiService, cc: ControllerComponent
 
   def api(path: String): Action[String] = {
     Action.async[String](parse.text) { request =>
-      val procedureCallRequest: Core.Request[Json] = autowire.Core.Request(path.split('/'), decode[Map[String, Json]](request.body).right.get)
-      procedureCallRouter(procedureCallRequest)
+      decode[Map[String, Json]](request.body) match {
+        case Right(s) =>
+          val procedureCallRequest = autowire.Core.Request(path.split('/'), s)
+          procedureCallRouter(procedureCallRequest)
+        case Left(v) =>
+          println("Error" + v)
+          Ok("Failed" + v).as("application/json").asFuture
+      }
     }
   }
 }
