@@ -64,3 +64,4 @@ lazy val shared = (crossProject.crossType(CrossType.Pure) in file("shared"))
 lazy val sharedJVM = shared.jvm
 
 lazy val sharedJS = shared.js
+
