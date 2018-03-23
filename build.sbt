@@ -1,3 +1,4 @@
+import Dependencies._
 
 
 name in ThisBuild := """scala-nette-form-generator"""
