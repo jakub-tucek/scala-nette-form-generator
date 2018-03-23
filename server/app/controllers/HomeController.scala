@@ -36,7 +36,7 @@ class HomeController @Inject()(val api: WiredApiService, cc: ControllerComponent
   }
 
   private val procedureCallRouter: autowire.Core.Request[Json] => Future[Result] = AutoWireServer
-    .route[WiredApi](new WiredApiService)(_)
+    .route[WiredApi](api)(_)
     .map(_.noSpaces).map(Ok(_))
 
   def api(path: String): Action[String] = {

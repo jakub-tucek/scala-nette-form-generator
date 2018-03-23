@@ -4,6 +4,7 @@ object Dependencies {
   val scalatestplus = "3.1.2"
   val scalactic = "3.0.5"
   val scalatest = "3.0.5"
+  val mockito = "1.10.19"
   // Server (jvm)
   val bcrypt = "3.1" // https://github.com/t3hnar/scala-bcrypt
 

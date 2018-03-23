@@ -1,9 +1,11 @@
 package controllers
 
+import org.scalatest.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneAppPerTest
 import play.api.test.Helpers._
 import play.api.test._
+import service.WiredApiService
 
 /**
   * Add your spec here.
@@ -11,12 +13,13 @@ import play.api.test._
   *
   * For more information, see https://www.playframework.com/documentation/latest/ScalaTestingWithScalaTest
   */
-class HomeControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting {
+class HomeControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injecting with MockitoSugar {
 
   "HomeController GET" should {
 
     "render the index page from a new instance of controller" in {
-      val controller = new HomeController(stubControllerComponents())
+      val apiMock = mock[WiredApiService]
+      val controller = new HomeController(apiMock, stubControllerComponents())
       val home = controller.index("").apply(FakeRequest(GET, "/"))
 
       status(home) mustBe OK

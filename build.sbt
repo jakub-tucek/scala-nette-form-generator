@@ -1,4 +1,4 @@
-import Dependencies._
+
 
 name in ThisBuild := """scala-nette-form-generator"""
 organization in ThisBuild := "cvut.fit"
@@ -6,6 +6,14 @@ organization in ThisBuild := "cvut.fit"
 version in ThisBuild := "1.0-SNAPSHOT"
 
 scalaVersion in ThisBuild := "2.12.5"
+
+lazy val root = (project in file("."))
+  .aggregate(server)
+  .settings(
+    run := {
+      (run in server in Compile).evaluated
+    }
+  )
 
 lazy val web = (project in file("web"))
   .settings(
@@ -17,8 +25,6 @@ lazy val web = (project in file("web"))
       "com.github.japgolly.scalajs-react" %%% "extra" % scalajsReact,
       "org.scala-js" %%% "scalajs-dom" % scalajsDom,
       "io.github.cquiroz" %%% "scala-java-time" % scalaJavaTime,
-      "org.scalatest" %% "scalatest" % scalatest % Test,
-      "org.scalactic" %% "scalactic" % scalactic % Test
     ),
     npmDependencies in Compile ++= Seq(
       "react" -> react,
@@ -39,7 +45,8 @@ lazy val server = (project in file("server"))
       "com.github.t3hnar" %% "scala-bcrypt" % bcrypt,
       "org.scalatestplus.play" %% "scalatestplus-play" % scalatestplus % Test,
       "org.scalatest" %% "scalatest" % scalatest % Test,
-      "org.scalactic" %% "scalactic" % scalactic % Test
+      "org.scalactic" %% "scalactic" % scalactic % Test,
+      "org.mockito" % "mockito-all" % mockito % Test,
     ),
     scalaJSProjects := Seq(web),
     pipelineStages in Assets := Seq(scalaJSPipeline, digest, gzip),
