@@ -1,6 +1,7 @@
 package controllers
 
 import io.circe.Json
+import io.circe.java8.time.TimeInstances
 import io.circe.parser._
 import javax.inject._
 import play.api.i18n.I18nSupport
@@ -20,7 +21,8 @@ import scala.concurrent.Future
 class HomeController @Inject()(val api: WiredApiService, cc: ControllerComponents)
   extends AbstractController(cc)
     with I18nSupport
-    with Implicits {
+    with Implicits
+    with TimeInstances {
 
   /**
     * Create an Action to render an HTML page.

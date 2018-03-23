@@ -1,5 +1,7 @@
 package screens
 
+import java.time.LocalDateTime
+
 import autowire._
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.extra.router.RouterCtl
@@ -8,8 +10,9 @@ import japgolly.scalajs.react.vdom.html_<^._
 import models.Locs.Loc
 import services.AjaxClient
 import shared.service.WiredApi
+import utils.{ScalaJsCodecs, ViewUtils}
 
-object HomeScreen extends HtmlTags {
+object HomeScreen extends HtmlTags with ScalaJsCodecs {
 
   case class Props(c: RouterCtl[Loc])
 
@@ -28,7 +31,7 @@ object HomeScreen extends HtmlTags {
 
     def mounted() = Callback {
       AjaxClient[WiredApi].now().call().foreach {
-        s: String => $.setState(State(s)).runNow()
+        s: LocalDateTime => $.setState(State(ViewUtils.formatDate(s))).runNow()
       }
     }
 
@@ -36,7 +39,7 @@ object HomeScreen extends HtmlTags {
       <.div(
         <.h2("Lorem Ipsum"),
         <.div(
-          "Time is: " + state.time
+          "Time on backend is: " + state.time
         )
       )
     }

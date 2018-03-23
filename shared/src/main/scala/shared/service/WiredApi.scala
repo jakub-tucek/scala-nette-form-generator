@@ -1,5 +1,7 @@
 package shared.service
 
+import java.time.LocalDateTime
+
 import scala.concurrent.Future
 
 /**
@@ -7,5 +9,5 @@ import scala.concurrent.Future
   */
 trait WiredApi {
 
-  def now(): Future[String]
+  def now(): Future[LocalDateTime]
 }

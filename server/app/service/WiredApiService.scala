@@ -14,6 +14,6 @@ import scala.concurrent.Future
   */
 @Singleton
 class WiredApiService extends WiredApi with Implicits {
-  override def now(): Future[String] = LocalDateTime.now().toString.asFuture
+  override def now(): Future[LocalDateTime] = LocalDateTime.now().asFuture
 }
 

@@ -54,7 +54,8 @@ lazy val shared = (crossProject.crossType(CrossType.Pure) in file("shared"))
       "com.lihaoyi" %%% "autowire" % autowire,
       "io.circe" %%% "circe-core" % circe,
       "io.circe" %%% "circe-generic" % circe,
-      "io.circe" %%% "circe-parser" % circe
+      "io.circe" %%% "circe-parser" % circe,
+      "io.circe" %% "circe-java8" % circe
     )
   )
   .jsConfigure(_.enablePlugins(ScalaJSPlugin))
