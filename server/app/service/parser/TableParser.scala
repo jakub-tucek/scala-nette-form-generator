@@ -2,6 +2,7 @@ package service.parser
 
 
 import domain._
+import domain.sql._
 
 import scala.language.postfixOps
 import scala.util.matching.Regex
