@@ -2,6 +2,8 @@ package shared.service
 
 import java.time.LocalDateTime
 
+import shared.dto.{SqlRequestDto, SqlSuccessResponse}
+
 import scala.concurrent.Future
 
 /**
@@ -10,4 +12,6 @@ import scala.concurrent.Future
 trait WiredApi {
 
   def now(): Future[LocalDateTime]
+
+  def processSql(sqlRequest: SqlRequestDto): Future[SqlSuccessResponse]
 }

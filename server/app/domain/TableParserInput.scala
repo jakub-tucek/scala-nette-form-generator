@@ -4,6 +4,4 @@ package domain
   *
   * @author Jakub Tucek
   */
-class ParserInput(val in: String) {
-
-}
+case class TableParserInput(in: String)

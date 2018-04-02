@@ -1,4 +1,4 @@
-import Dependencies._
+
 
 
 name in ThisBuild := """scala-nette-form-generator"""
@@ -64,7 +64,8 @@ lazy val shared = (crossProject.crossType(CrossType.Pure) in file("shared"))
       "io.circe" %%% "circe-generic" % circe,
       "io.circe" %%% "circe-parser" % circe,
       "io.circe" %% "circe-java8" % circe
-    )
+    ),
+    addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
   )
   .jsConfigure(_.enablePlugins(ScalaJSPlugin))
   .jsSettings()

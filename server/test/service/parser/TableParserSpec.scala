@@ -1,6 +1,6 @@
 package service.parser
 
-import domain.{ParserInput, ParserOutputSuccess}
+import domain.{TableParserInput, TableParserOutputSuccess}
 import org.scalatest.FlatSpec
 
 /**
@@ -59,12 +59,12 @@ class TableParserSpec extends FlatSpec {
 
 
   "TableParserSpec" should "Parse tables" in {
-    val a = TableParser.apply(new ParserInput(input))
+    val a = TableParser.apply(new TableParserInput(input))
 
-    assert(a.isInstanceOf[ParserOutputSuccess])
+    assert(a.isInstanceOf[TableParserOutputSuccess])
 
     a match {
-      case s: ParserOutputSuccess => {
+      case s: TableParserOutputSuccess => {
         assert(s.tables.nonEmpty)
       }
     }

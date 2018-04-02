@@ -39,13 +39,13 @@ object TableParser extends RegexParsers {
 
   private def required: Parser[ColumnRequired] = "NOT" ~ "NULL" ^^ { _ => ColumnRequired() }
 
-  def apply(input: ParserInput): ParserOutput = {
+  def apply(input: TableParserInput): TableParserOutput = {
     val cleanedScript = cleanScript(input.in)
     val res = parseAll(expression, cleanedScript)
     println(res)
     res match {
-      case Success(result, _) => ParserOutputSuccess(result, input)
-      case NoSuccess(msg, in) => ParserOutputFailure(msg, in)
+      case Success(result, _) => TableParserOutputSuccess(result, input)
+      case NoSuccess(msg, in) => TableParserOutputFailure(msg, in)
     }
   }
 
