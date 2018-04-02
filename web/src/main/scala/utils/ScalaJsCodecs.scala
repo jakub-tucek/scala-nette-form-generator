@@ -14,4 +14,5 @@ trait ScalaJsCodecs {
   implicit val decodeLocalDateTime: Decoder[LocalDateTime] = Decoder.decodeString.emap {
     str => Either.catchNonFatal(LocalDateTime.parse(str)).leftMap(t => "LocalDateTime")
   }
+
 }

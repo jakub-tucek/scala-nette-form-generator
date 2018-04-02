@@ -32,6 +32,8 @@ object SqlFormComponent {
     }
 
     private def handleSubmit(e: ReactEventFromInput): Callback = {
+      e.preventDefault()
+
       $.state.map(s => {
         println(s)
         AjaxClient[WiredApi].processSql(ProcessFormRequest(s.areaValue)).call().foreach {
