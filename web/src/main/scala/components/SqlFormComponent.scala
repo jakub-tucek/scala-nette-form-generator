@@ -15,17 +15,18 @@ import shared.service.WiredApi
 object SqlFormComponent {
 
   private val component = ScalaComponent
-    .builder[Unit]("SqlForm$")
+    .builder[Props]("SqlForm$")
     .initialState(State(""))
     .renderBackend[Backend]
     .build
 
-  def apply() = component()
+  def apply(c: (ProcessFormSuccessResponse) => Unit) = component(Props(c))
 
   case class State(areaValue: String)
 
-  class Backend($: BackendScope[Unit, State]) {
+  case class Props(setProcessFormCallback: (ProcessFormSuccessResponse) => Unit)
 
+  class Backend($: BackendScope[Props, State]) {
 
     private def onAreaChange(e: ReactEventFromInput): Callback = {
       $.setState(State(e.target.value))
@@ -35,9 +36,8 @@ object SqlFormComponent {
       e.preventDefault()
 
       $.state.map(s => {
-        println(s)
         AjaxClient[WiredApi].processSql(ProcessFormRequest(s.areaValue)).call().foreach {
-          s: ProcessFormSuccessResponse => println(s)
+          s: ProcessFormSuccessResponse => $.props.map(p => p.setProcessFormCallback(s)).runNow()
         }
       })
     }
