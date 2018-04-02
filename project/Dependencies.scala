@@ -19,6 +19,7 @@ object Dependencies {
   // Shared Dependencies
   val scalaJavaTime = "2.0.0-M12" // https://github.com/cquiroz/scala-java-time
 
+  val paradise = "2.1.0" // json encode
 
   // Codegen only
 

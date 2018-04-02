@@ -65,7 +65,7 @@ lazy val shared = (crossProject.crossType(CrossType.Pure) in file("shared"))
       "io.circe" %%% "circe-parser" % circe,
       "io.circe" %% "circe-java8" % circe
     ),
-    addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
+    addCompilerPlugin("org.scalamacros" % "paradise" % paradise cross CrossVersion.full)
   )
   .jsConfigure(_.enablePlugins(ScalaJSPlugin))
   .jsSettings()
