@@ -20,12 +20,17 @@ object TableParser extends RegexParsers {
   private val name = apostrophe ~> """([^`\s]+)""".r <~ apostrophe
   private val intValue = "(" ~> """[0-9]+""".r <~ ")" ~ opt(",")
   private val enumType = "'" ~> """[A-Z_]+""".r <~ """\',?""".r
-
   private val colType = "VARCHAR" | "TINYINT" | "INT" | "TIMESTAMP" | "ENUM"
 
   private def baseTypeValue = intValue ^^ (v => ColumnMaxLength(v.toInt))
 
   private def enumTypes = "(" ~> (enumType *) <~ ")" ^^ (t => ColumnEnumTypes(t))
+
+  private def defaultValue: Parser[ColumnDefaultValueString] = "DEFAULT" ~> ("NULL" | defaultValueString) ^^ { v => ColumnDefaultValueString(v) }
+
+  private def defaultValueString: Parser[String] = "'" ~> """[^']+""".r <~ "'"
+
+  private def required: Parser[ColumnRequired] = "NOT" ~ "NULL" ^^ { _ => ColumnRequired() }
 
   def apply(input: ParserInput): ParserOutput = {
     val cleanedScript = cleanScript(input.in)
@@ -37,25 +42,17 @@ object TableParser extends RegexParsers {
     }
   }
 
-  private def expression: Parser[List[Table]] = rep(table)
-
-  private def defaultValue: Parser[ColumnDefaultValueString] = "DEFAULT" ~> ("NULL" | defaultValueString) ^^ { v => ColumnDefaultValueString(v) }
-
-  private def defaultValueString: Parser[String] = "'" ~> """[^']+""".r <~ "'"
-
-  private def required: Parser[ColumnRequired] = "NOT" ~ "NULL" ^^ { _ => ColumnRequired() }
-
-  private def column = name ~ colType ~ columnOptions <~ rowDefEnd
-
   private def columnOptions: Parser[List[ColumnOption]] = (baseTypeValue | enumTypes | required | defaultValue | unknownColOption) *
 
-  private def columnTyped = column ^^ { case n ~ t ~ o => TableColumn(n, t, o) }
+  private def expression: Parser[List[Table]] = rep(table)
 
   private def constraint = """(PRIMARY|UNIQUE|CONSTRAINT|CHECK|FULLTEXT|FOREIGN|INDEX|KEY|ON|SPATIAL)""".r ~ textUntilComma ~ rowDefEnd ^^ (_ => Nil)
 
   private def table: Parser[Table] = {
     "CREATE TABLE" ~> name ~ "(" ~ rep(columnTyped) <~ rep(constraint) <~ opt(")") ^^ { case n ~ _ ~ cols => Table(n, cols) }
   }
+
+  private def unknownColOption: Parser[ColumnUnrecognized] = """[A-Z_]+""".r ^^ (u => ColumnUnrecognized(u))
 
   private def cleanScript(s: String) = {
     s.replaceAll("#.*$", "")
@@ -69,5 +66,6 @@ object TableParser extends RegexParsers {
       .mkString(";")
   }
 
-  private def unknownColOption: Parser[ColumnUnrecognized] = """[A-Z_]+""".r ^^ (u => ColumnUnrecognized(u))
+  private def columnTyped = name ~ colType ~ columnOptions <~ rowDefEnd ^^ { case n ~ t ~ o => TableColumn(n, t, o) } // name, type, col options
+
 }
