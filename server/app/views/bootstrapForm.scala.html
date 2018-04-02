@@ -1,0 +1,25 @@
+@
+import domain.sql.Table
+
+@(table: Table)
+
+<form n:name="form">
+    {$form->render('errors')}
+
+    @for(col <- table.cols) {
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    {label @col.name}
+                    {input @col.name 'class' => 'form-control'}
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="col-md-6">
+        <div class="form-group">
+            {input submit 'class' => 'form-control btn btn-info'}
+        </div>
+    </div>
+</form>
