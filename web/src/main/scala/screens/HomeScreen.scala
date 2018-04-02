@@ -3,6 +3,7 @@ package screens
 import java.time.LocalDateTime
 
 import autowire._
+import components.SqlFormComponent
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.extra.router.RouterCtl
 import japgolly.scalajs.react.vdom.HtmlTags
@@ -40,6 +41,9 @@ object HomeScreen extends HtmlTags with ScalaJsCodecs {
         <.h2("Lorem Ipsum"),
         <.div(
           "Time on backend is: " + state.time
+        ),
+        <.div(
+          SqlFormComponent()
         )
       )
     }
