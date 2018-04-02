@@ -6,14 +6,13 @@ import autowire._
 import components.SqlFormComponent
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.extra.router.RouterCtl
-import japgolly.scalajs.react.vdom.HtmlTags
 import japgolly.scalajs.react.vdom.html_<^._
 import models.Locs.Loc
 import services.AjaxClient
 import shared.service.WiredApi
 import utils.{ScalaJsCodecs, ViewUtils}
 
-object HomeScreen extends HtmlTags with ScalaJsCodecs {
+object HomeScreen extends ScalaJsCodecs {
 
   case class Props(c: RouterCtl[Loc])
 
