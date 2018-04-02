@@ -3,7 +3,9 @@ package domain
 import domain.sql.Table
 import service.parser.TableParser
 
-
+/**
+  * Output of table parser
+  */
 sealed trait TableParserOutput
 
 case class TableParserOutputSuccess(tables: List[Table], next: TableParserInput) extends TableParserOutput {

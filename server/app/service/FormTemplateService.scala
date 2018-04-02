@@ -2,7 +2,7 @@ package service
 
 import domain.sql.Table
 import javax.inject.Singleton
-import shared.dto.{FormTemplate, FormTemplateResult}
+import shared.domain.{FormLatteTemplate, FormLatteTemplateList}
 
 /**
   *
@@ -11,9 +11,9 @@ import shared.dto.{FormTemplate, FormTemplateResult}
 @Singleton
 class FormTemplateService {
 
-  def createTemplates(tables: List[Table]): FormTemplateResult = {
-    val templates = tables.map(t => FormTemplate(t.name, views.html.bootstrapForm.render(t).body))
+  def createTemplates(tables: List[Table]): FormLatteTemplateList = {
+    val templates = tables.map(t => FormLatteTemplate(t.name, views.html.bootstrapForm.render(t).body))
 
-    FormTemplateResult(templates)
+    FormLatteTemplateList(templates)
   }
 }

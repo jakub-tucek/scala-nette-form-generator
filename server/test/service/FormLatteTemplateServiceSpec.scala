@@ -7,7 +7,7 @@ import org.scalatest.{FlatSpec, Matchers}
   *
   * @author Jakub Tucek
   */
-class FormTemplateServiceSpec extends FlatSpec with Matchers {
+class FormLatteTemplateServiceSpec extends FlatSpec with Matchers {
 
   "FormTemplateSericeSpec" should "Convert table to correct html" in {
     val service = new FormTemplateService

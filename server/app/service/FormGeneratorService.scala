@@ -3,7 +3,7 @@ package service
 import domain.{TableParserInput, TableParserOutputFailure, TableParserOutputSuccess}
 import javax.inject.{Inject, Singleton}
 import service.parser.TableParser
-import shared.dto.{FormTemplateResult, SqlRequestDto, SqlSuccessResponse}
+import shared.domain.{FormLatteTemplateList, ProcessFormRequest, ProcessFormSuccessResponse}
 
 /**
   *
@@ -12,18 +12,18 @@ import shared.dto.{FormTemplateResult, SqlRequestDto, SqlSuccessResponse}
 @Singleton
 class FormGeneratorService @Inject()(val formTemplateService: FormTemplateService) {
 
-  def processSql(sqlRequest: SqlRequestDto): SqlSuccessResponse = {
+  def processSql(sqlRequest: ProcessFormRequest): ProcessFormSuccessResponse = {
     val parserInput = TableParserInput(sqlRequest.sqlContent)
 
     TableParser.apply(parserInput) match {
       case TableParserOutputSuccess(tables, _) => {
         val formTemplateResult = formTemplateService.createTemplates(tables)
-        SqlSuccessResponse(formTemplateResult)
+        ProcessFormSuccessResponse(formTemplateResult)
       }
       case TableParserOutputFailure(m, in) => {
         //        SqlFailResponse(s"Parsing failed with message: $m. Remaining text to be parsed: $in")
         println(s"Parsing failed with message: $m. Remaining text to be parsed: $in")
-        SqlSuccessResponse(FormTemplateResult(List.empty)) // TODO Process fail response
+        ProcessFormSuccessResponse(FormLatteTemplateList(List.empty)) // TODO Process fail response
       }
     }
   }
