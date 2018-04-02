@@ -21,7 +21,13 @@ object TableParser extends RegexParsers {
   private val name = apostrophe ~> """([^`\s]+)""".r <~ apostrophe
   private val intValue = "(" ~> """[0-9]+""".r <~ ")" ~ opt(",")
   private val enumType = "'" ~> """[A-Z_]+""".r <~ """\',?""".r
-  private val colType = "VARCHAR" | "TINYINT" | "INT" | "TIMESTAMP" | "ENUM"
+
+  private def colType: Parser[ColumnType] = "VARCHAR" ^^ { _ => ColumnVarchar() } |
+    "TINYINT" ^^ { _ => ColumnTinyInt() } |
+    "INT" ^^ { _ => ColumnInt() } |
+    "TIMESTAMP" ^^ { _ => ColumnTimestamp() } |
+    "ENUM" ^^ { _ => ColumnEnum() } |
+    "TEXT" ^^ { _ => ColumnText() }
 
   private def baseTypeValue = intValue ^^ (v => ColumnMaxLength(v.toInt))
 
