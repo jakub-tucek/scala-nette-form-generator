@@ -32,6 +32,7 @@ class TableParserSpec extends FlatSpec {
       |
       |CREATE TABLE `user` (
       |  `id`             INT(11)      NOT NULL                 AUTO_INCREMENT,
+      |    # personal info
       |  `lastName`       VARCHAR(255)                          DEFAULT NULL,
       |  `email`          VARCHAR(255) NOT NULL,
       |  `role`           ENUM ('USER', 'ADMIN', 'SUPER_ADMIN') DEFAULT 'USER',
@@ -59,7 +60,7 @@ class TableParserSpec extends FlatSpec {
 
 
   "TableParserSpec" should "Parse tables" in {
-    val a = TableParser.apply(new TableParserInput(input))
+    val a = TableParser.apply(TableParserInput(input))
 
     assert(a.isInstanceOf[TableParserOutputSuccess])
 

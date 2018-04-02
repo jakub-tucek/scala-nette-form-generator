@@ -62,7 +62,7 @@ object TableParser extends RegexParsers {
   private def unknownColOption: Parser[ColumnUnrecognized] = """[A-Z_]+""".r ^^ (u => ColumnUnrecognized(u))
 
   private def cleanScript(s: String) = {
-    s.replaceAll("#.*$", "")
+    s.replaceAll("#.*", "")
       .replaceAll("\n|\r", "")
       .replaceAll("$\\s+", "")
       .replaceAll("\\s+", " ")
