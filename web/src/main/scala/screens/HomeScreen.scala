@@ -44,9 +44,9 @@ object HomeScreen extends ScalaJsCodecs {
     def render(props: Props, state: State): VdomTag = {
       println(state)
 
-      var content = "";
+      var content = ""
       if (state.processFormResponse != null) {
-        content = state.processFormResponse.formTemplateResult.templates(0).templateContent;
+        content = state.processFormResponse.formTemplateResult.templates(0).templateContent
       }
       <.div(
         <.div(
