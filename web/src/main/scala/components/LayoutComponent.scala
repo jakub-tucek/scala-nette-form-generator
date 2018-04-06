@@ -3,8 +3,8 @@ package components
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.extra.router.{Resolution, RouterCtl}
 import japgolly.scalajs.react.vdom.HtmlTags
-import models.Locs.Loc
 import japgolly.scalajs.react.vdom.html_<^._
+import models.Locs.Loc
 
 object LayoutComponent extends HtmlTags {
 
@@ -36,7 +36,7 @@ object LayoutComponent extends HtmlTags {
             SidebarComponent(),
             <.main(
               ^.role := "main",
-              ^.cls := "col-md-9 ml-sm-auto col-lg-10 pt-3 px-4",
+              ^.cls := "col-md-11 ml-sm-auto pt-3 px-4",
               <.div(
                 ^.cls := "d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom",
                 <.h1(

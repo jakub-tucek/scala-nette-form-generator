@@ -11,7 +11,7 @@ object SidebarComponent {
 
   private val component = ScalaComponent.builder[Unit]("SidebarComponent")
     .render(_ => <.nav(
-      ^.cls := "col-md-2 d-none d-md-block bg-light sidebar",
+      ^.cls := "col-md-1 d-none d-md-block bg-light sidebar",
       <.div(
         ^.cls := "sidebar-sticky",
         <.ul(

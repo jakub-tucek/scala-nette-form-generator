@@ -49,15 +49,19 @@ object HomeScreen extends ScalaJsCodecs {
         content = state.processFormResponse.formTemplateResult.templates(0).templateContent
       }
       <.div(
+        ^.cls := "row",
         <.div(
-          "Time on backend is: " + state.time
-        ),
-        <.hr(),
-        <.div(
+          ^.cls := "col-md-6",
           SqlFormComponent(setProcessForm)
         ),
-        ReactHighlight()(ReactHighlight.props())(
-          content
+        <.div(
+          ^.cls := "col-md-6",
+          ReactHighlight()(ReactHighlight.props())(
+            content
+          )
+        ),
+        <.div(
+          "Time on backend is: " + state.time
         )
       )
     }

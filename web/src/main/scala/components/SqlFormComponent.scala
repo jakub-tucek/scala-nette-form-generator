@@ -55,7 +55,7 @@ object SqlFormComponent {
             <.textarea(
               ^.cls := "form-control",
               ^.id := "sqlArea",
-              ^.rows := 10,
+              ^.rows := 20,
               ^.value := defVal, // TODO: Remove def val
               ^.onChange ==> onAreaChange
             )
