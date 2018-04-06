@@ -4,6 +4,7 @@ import java.time.LocalDateTime
 
 import autowire._
 import components.SqlFormComponent
+import facade.ReactHighlight
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.extra.router.RouterCtl
 import japgolly.scalajs.react.vdom.html_<^._
@@ -43,13 +44,20 @@ object HomeScreen extends ScalaJsCodecs {
     def render(props: Props, state: State): VdomTag = {
       println(state)
 
+      var content = "";
+      if (state.processFormResponse != null) {
+        content = state.processFormResponse.formTemplateResult.templates(0).templateContent;
+      }
       <.div(
-        <.h2("Lorem Ipsum"),
         <.div(
           "Time on backend is: " + state.time
         ),
+        <.hr(),
         <.div(
           SqlFormComponent(setProcessForm)
+        ),
+        ReactHighlight()(ReactHighlight.props())(
+          content
         )
       )
     }
