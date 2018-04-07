@@ -1,4 +1,4 @@
-
+import Dependencies._
 
 name in ThisBuild := """scala-nette-form-generator"""
 organization in ThisBuild := "cvut.fit"
