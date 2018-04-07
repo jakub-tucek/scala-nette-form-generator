@@ -1,10 +1,12 @@
 package components
 
 import japgolly.scalajs.react._
+import japgolly.scalajs.react.component.Scala.Unmounted
 import japgolly.scalajs.react.extra.router.{Resolution, RouterCtl}
 import japgolly.scalajs.react.vdom.HtmlTags
 import japgolly.scalajs.react.vdom.html_<^._
 import models.Locs.Loc
+import org.scalajs.dom.html.Span
 
 object LayoutComponent extends HtmlTags {
 
@@ -19,14 +21,14 @@ object LayoutComponent extends HtmlTags {
       .componentDidMount(_.backend.mounted())
       .build
 
-  def apply(c: RouterCtl[Loc], r: Resolution[Loc]) = component(Props(c, r))
+  def apply(c: RouterCtl[Loc], r: Resolution[Loc]): Unmounted[Props, State, Backend] = component(Props(c, r))
 
   class Backend($: BackendScope[Props, State]) {
 
-    def mounted() = Callback.empty
+    def mounted(): Callback = Callback.empty
 
 
-    def render(props: Props, state: State) = {
+    def render(props: Props, state: State): VdomTagOf[Span] = {
       <.span(
         NavComponent(),
         <.div(
@@ -37,13 +39,6 @@ object LayoutComponent extends HtmlTags {
             <.main(
               ^.role := "main",
               ^.cls := "col-md-11 ml-sm-auto pt-3 px-4",
-              <.div(
-                ^.cls := "d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom",
-                <.h1(
-                  ^.cls := "h2",
-                  "Nette generator"
-                )
-              ),
               props.r.render()
             )
           )

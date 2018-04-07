@@ -3,8 +3,9 @@ package screens
 import java.time.LocalDateTime
 
 import autowire._
-import components.{FormTemplateResultComponent, SqlFormComponent}
+import components.{SqlFormComponent, SqlResultComponent}
 import japgolly.scalajs.react._
+import japgolly.scalajs.react.component.Scala.Unmounted
 import japgolly.scalajs.react.extra.router.RouterCtl
 import japgolly.scalajs.react.vdom.html_<^._
 import models.Locs.Loc
@@ -26,7 +27,7 @@ object HomeScreen extends ScalaJsCodecs {
 
   case class State(time: String, processFormResponse: ProcessFormSuccessResponse)
 
-  def apply(c: RouterCtl[Loc]) = component(Props(c))
+  def apply(c: RouterCtl[Loc]): Unmounted[Props, State, Backend] = component(Props(c))
 
   class Backend($: BackendScope[Props, State]) {
 
@@ -49,7 +50,7 @@ object HomeScreen extends ScalaJsCodecs {
         ),
         <.div(
           ^.cls := "col-md-6",
-          FormTemplateResultComponent(if (state.processFormResponse != null) state.processFormResponse.formTemplateResult else null)
+          SqlResultComponent(state.processFormResponse)
         ),
         <.div(
           "Time on backend is: " + state.time
