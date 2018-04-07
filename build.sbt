@@ -29,8 +29,7 @@ lazy val web = (project in file("web"))
     npmDependencies in Compile ++= Seq(
       "react" -> react,
       "react-dom" -> react,
-      "react-highlight" -> reactHighlight,
-      "reactstrap" -> reactstrap
+      "react-highlight" -> reactHighlight
     )
   )
   .dependsOn(sharedJS)
