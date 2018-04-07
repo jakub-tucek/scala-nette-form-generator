@@ -23,5 +23,4 @@ object Dependencies {
   // jsDependencies
   val react = "16.2.0" // https://facebook.github.io/react/
   val reactHighlight = "0.11.1" // https://github.com/akiran/react-highlight
-  val reactstrap = "5.0.0" // https://github.com/reactstrap/reactstrap
 }
