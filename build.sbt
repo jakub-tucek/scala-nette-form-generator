@@ -1,4 +1,4 @@
-import Dependencies._
+
 
 name in ThisBuild := """scala-nette-form-generator"""
 organization in ThisBuild := "cvut.fit"
@@ -29,7 +29,8 @@ lazy val web = (project in file("web"))
     npmDependencies in Compile ++= Seq(
       "react" -> react,
       "react-dom" -> react,
-      "react-highlight" -> reactHighlight
+      "react-highlight" -> reactHighlight,
+      "reactstrap" -> reactstrap
     )
   )
   .dependsOn(sharedJS)

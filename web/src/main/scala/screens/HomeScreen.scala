@@ -3,8 +3,7 @@ package screens
 import java.time.LocalDateTime
 
 import autowire._
-import components.SqlFormComponent
-import facade.ReactHighlight
+import components.{FormTemplateResultComponent, SqlFormComponent}
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.extra.router.RouterCtl
 import japgolly.scalajs.react.vdom.html_<^._
@@ -42,12 +41,6 @@ object HomeScreen extends ScalaJsCodecs {
     }
 
     def render(props: Props, state: State): VdomTag = {
-      println(state)
-
-      var content = ""
-      if (state.processFormResponse != null) {
-        content = state.processFormResponse.formTemplateResult.templates(0).templateContent
-      }
       <.div(
         ^.cls := "row",
         <.div(
@@ -56,9 +49,7 @@ object HomeScreen extends ScalaJsCodecs {
         ),
         <.div(
           ^.cls := "col-md-6",
-          ReactHighlight()(ReactHighlight.props())(
-            content
-          )
+          FormTemplateResultComponent(if (state.processFormResponse != null) state.processFormResponse.formTemplateResult else null)
         ),
         <.div(
           "Time on backend is: " + state.time
