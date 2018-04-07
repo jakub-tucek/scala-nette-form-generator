@@ -56,8 +56,9 @@ object SqlFormComponent {
               ^.cls := "form-control",
               ^.id := "sqlArea",
               ^.rows := 20,
-              ^.value := defVal, // TODO: Remove def val
-              ^.onChange ==> onAreaChange
+//              ^.value := defVal, // TODO: Remove def val
+              ^.onChange ==> onAreaChange,
+              ^.required := true
             )
           ),
           <.div(
