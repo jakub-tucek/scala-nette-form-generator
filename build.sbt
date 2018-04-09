@@ -18,8 +18,8 @@ lazy val root = (project in file("."))
 lazy val web = (project in file("web"))
   .settings(
     scalaJSUseMainModuleInitializer := true,
-    emitSourceMaps := false,
-    webpackConfigFile in fullOptJS := Some(baseDirectory.value / "prod.webpack.config.js"),
+    emitSourceMaps := true,
+    webpackConfigFile := Some(baseDirectory.value / "prod.webpack.config.js"),
     libraryDependencies ++= Seq(
       "com.github.japgolly.scalajs-react" %%% "core" % scalajsReact,
       "com.github.japgolly.scalajs-react" %%% "extra" % scalajsReact,
@@ -31,6 +31,8 @@ lazy val web = (project in file("web"))
       "react-dom" -> react,
       "react-highlight" -> reactHighlight,
       "react-spinkit" -> spinkit,
+      "style-loader" -> styleLoader,
+      "css-loader" -> cssLoader,
     )
   )
   .dependsOn(sharedJS)

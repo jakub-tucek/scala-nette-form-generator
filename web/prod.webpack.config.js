@@ -10,3 +10,10 @@ module.exports.plugins = (module.exports.plugins || []).concat([
     }),
     new webpack.optimize.UglifyJsPlugin()
 ]);
+
+module.exports.module.rules = [
+    {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+    }
+];
