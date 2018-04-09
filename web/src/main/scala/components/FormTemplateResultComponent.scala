@@ -39,9 +39,9 @@ object FormTemplateResultComponent extends HtmlTags {
                 val index = zipped._2
 
                 <.li(
-                  ^.cls := s"nav nav-item ${ViewUtils.getClassIfTrue(s.activeTabNo.contains(index), "active")}",
+                  ^.cls := "nav-item",
                   <.a(
-                    ^.cls := "nav-link",
+                    ^.cls := s"nav-link ${ViewUtils.getClassIfTrue(s.activeTabNo.contains(index), "active")}",
                     ^.onClick --> handleTabClick(index),
                     zipped._1.templateName
                   )
