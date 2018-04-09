@@ -4,8 +4,9 @@ import facade.ReactHighlight
 import japgolly.scalajs.react.component.Scala.Unmounted
 import japgolly.scalajs.react.vdom.HtmlTags
 import japgolly.scalajs.react.vdom.html_<^._
-import japgolly.scalajs.react.{BackendScope, ScalaComponent}
+import japgolly.scalajs.react.{BackendScope, Callback, ScalaComponent}
 import shared.domain.FormLatteTemplateList
+import utils.ViewUtils
 
 /**
   *
@@ -17,27 +18,48 @@ object FormTemplateResultComponent extends HtmlTags {
 
   private val component =
     ScalaComponent.builder[Props]("FormTemplateResultComponent")
+      .initialState(State(None))
       .renderBackend[Backend]
       .build
 
-  def apply(p: FormLatteTemplateList): Unmounted[Props, Unit, Backend] = component(Props(p))
+  def apply(p: FormLatteTemplateList): Unmounted[Props, State, Backend] = component(Props(p))
 
+  case class State(activeTabNo: Option[Int])
 
-  class Backend(bs: BackendScope[Props, Unit]) {
+  class Backend($: BackendScope[Props, State]) {
 
-    def render(p: Props): VdomElement = p.templateList match {
+    def render(p: Props, s: State): VdomElement = p.templateList match {
       case l: FormLatteTemplateList => {
-        <.ul(
-          ^.cls := "nav nav-tabs",
-          l.templates.toTagMod(t => <.li(
-            <.h3(t.templateName),
+        <.div(
+          <.ul(
+            ^.cls := "nav nav-tabs",
+            l.templates
+              .zipWithIndex
+              .toTagMod(zipped => {
+                val index = zipped._2
+
+                <.li(
+                  ^.cls := s"nav nav-item ${ViewUtils.getClassIfTrue(s.activeTabNo.contains(index), "active")}",
+                  <.a(
+                    ^.cls := "nav-link",
+                    ^.onClick --> handleTabClick(index),
+                    zipped._1.templateName
+                  )
+                )
+              })
+          ),
+          <.div(
             ReactHighlight()(ReactHighlight.props())(
-              t.templateContent
+              l.templates(s.activeTabNo.getOrElse(0)).templateContent
             )
-          ))
+          )
         )
       }
       case _ => <.div()
+    }
+
+    private def handleTabClick(id: Int): Callback = {
+      $.setState(State(Option(id)))
     }
   }
 

@@ -36,6 +36,8 @@ object SqlResultComponent extends HtmlTags {
     def render(props: Props, state: State): VdomTag = {
       props.processFormResponse match {
         case res: ProcessFormSuccessResponse =>
+          println("render1")
+
           <.div(
             <.div(
               ^.cls := "nav flex-column nav-pills",
