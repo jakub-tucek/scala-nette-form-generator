@@ -1,6 +1,5 @@
 package facade
 
-import facade.ReactHighlight.{Props, RawComponent}
 import japgolly.scalajs.react._
 import models.SpinType
 
