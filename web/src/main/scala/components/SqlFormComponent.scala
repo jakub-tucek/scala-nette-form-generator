@@ -2,8 +2,10 @@ package components
 
 
 import autowire._
+import facade.ReactSpinkit
 import japgolly.scalajs.react.vdom.html_<^._
 import japgolly.scalajs.react.{Callback, _}
+import models.SpinFoldingCube
 import services.AjaxClient
 import shared.domain.{ProcessFormRequest, ProcessFormSuccessResponse}
 import shared.service.WiredApi
@@ -61,6 +63,7 @@ object SqlFormComponent {
               ^.required := true
             )
           ),
+          ReactSpinkit()(ReactSpinkit.props(SpinFoldingCube()))(),
           <.div(
             ^.cls := "form-group",
             <.button(
