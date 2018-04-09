@@ -50,7 +50,6 @@ object SqlResultComponent extends HtmlTags {
               })
             ),
             <.div(
-              ^.cls := "nav flex-column nav-pills",
               state.tabs
                 .filter(t => t.id == state.activeTabId)
                 .toTagMod(t => {
