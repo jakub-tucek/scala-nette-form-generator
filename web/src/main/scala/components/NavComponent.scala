@@ -51,6 +51,7 @@ object NavComponent {
         <.ul(
           ^.cls := "navbar-nav px-3",
           <.li(
+            ^.color := "white",
             ^.cls := "nav-item text-nowrap",
             state
           )

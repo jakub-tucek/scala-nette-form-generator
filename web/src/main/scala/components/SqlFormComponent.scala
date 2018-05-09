@@ -2,10 +2,8 @@ package components
 
 
 import autowire._
-import facade.ReactSpinkit
 import japgolly.scalajs.react.vdom.html_<^._
 import japgolly.scalajs.react.{Callback, _}
-import models.SpinFoldingCube
 import services.AjaxClient
 import shared.domain.{ProcessFormRequest, ProcessFormSuccessResponse}
 import shared.service.WiredApi
@@ -21,6 +19,8 @@ object SqlFormComponent {
     .initialState(State(defVal, isFetching = false)) //TODO: Remove def val
     .renderBackend[Backend]
     .build
+
+
   private val defVal =
     """
       |ET NAMES utf8;
@@ -100,6 +100,7 @@ object SqlFormComponent {
 
     def render(state: State): VdomTag = {
       <.div(
+        SpinnerComponent(SpinnerComponent.Props(state.isFetching)),
         <.form(
           ^.onSubmit ==> handleSubmit,
           <.div(
@@ -117,7 +118,6 @@ object SqlFormComponent {
               ^.required := true
             )
           ),
-          if (state.isFetching) ReactSpinkit()(ReactSpinkit.props(SpinFoldingCube()))() else EmptyVdom,
           <.div(
             ^.cls := "form-group",
             <.button(
@@ -135,7 +135,6 @@ object SqlFormComponent {
 
     private def handleSubmit(e: ReactEventFromInput): Callback = {
       e.preventDefault()
-
 
       $.modState(s => State(s.textAreaValue, isFetching = true)).flatMap { // update fetching status
         _ =>
