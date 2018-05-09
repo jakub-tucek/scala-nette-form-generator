@@ -10,6 +10,7 @@ import scala.scalajs.js.annotation.JSImport
   *
   * @author Jakub Tucek
   */
+//noinspection TypeAnnotation
 object ReactHighlight {
 
   @JSImport("react-highlight", JSImport.Default)

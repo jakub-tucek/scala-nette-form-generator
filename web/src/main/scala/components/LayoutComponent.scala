@@ -6,7 +6,7 @@ import japgolly.scalajs.react.extra.router.{Resolution, RouterCtl}
 import japgolly.scalajs.react.vdom.HtmlTags
 import japgolly.scalajs.react.vdom.html_<^._
 import models.Locs.Loc
-import org.scalajs.dom.html.Span
+import org.scalajs.dom.html.Div
 
 object LayoutComponent extends HtmlTags {
 
@@ -28,22 +28,25 @@ object LayoutComponent extends HtmlTags {
     def mounted(): Callback = Callback.empty
 
 
-    def render(props: Props, state: State): VdomTagOf[Span] = {
-      <.span(
-        NavComponent(),
-        <.div(
-          ^.cls := "container-fluid",
+    def render(props: Props, state: State): VdomTagOf[Div] = {
+      <.div(
+        <.span(
+          NavComponent(),
           <.div(
-            ^.cls := "row",
-            SidebarComponent(),
-            <.main(
-              ^.role := "main",
-              ^.cls := "col-md-11 ml-sm-auto pt-3 px-4",
-              props.r.render()
+            ^.cls := "container-fluid",
+            <.div(
+              ^.cls := "row",
+              SidebarComponent(),
+              <.main(
+                ^.role := "main",
+                ^.cls := "col-md-11 ml-sm-auto pt-3 px-4",
+                props.r.render()
+              )
             )
           )
         )
       )
     }
   }
+
 }

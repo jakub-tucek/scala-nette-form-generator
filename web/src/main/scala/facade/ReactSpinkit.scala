@@ -23,7 +23,7 @@ object ReactSpinkit {
   }
 
   def props(s: SpinType) = {
-    val p = new (js.Object).asInstanceOf[Props]
+    val p = (new js.Object).asInstanceOf[Props]
     p.name = s.typeName
     p
   }

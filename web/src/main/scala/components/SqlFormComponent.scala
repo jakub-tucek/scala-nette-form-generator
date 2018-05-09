@@ -18,65 +18,10 @@ object SqlFormComponent {
 
   private val component = ScalaComponent
     .builder[Props]("SqlForm$")
-    .initialState(State(defVal)) //TODO: Remove def val
+    .initialState(State(defVal, isFetching = false)) //TODO: Remove def val
     .renderBackend[Backend]
     .build
-
-  def apply(c: (ProcessFormSuccessResponse) => Unit) = component(Props(c))
-
-  case class State(areaValue: String)
-
-  case class Props(setProcessFormCallback: (ProcessFormSuccessResponse) => Unit)
-
-  class Backend($: BackendScope[Props, State]) {
-
-    private def onAreaChange(e: ReactEventFromInput): Callback = {
-      $.setState(State(e.target.value))
-    }
-
-    private def handleSubmit(e: ReactEventFromInput): Callback = {
-      e.preventDefault()
-
-      $.state.map(s => {
-        AjaxClient[WiredApi].processSql(ProcessFormRequest(s.areaValue)).call().foreach {
-          s: ProcessFormSuccessResponse => $.props.map(p => p.setProcessFormCallback(s)).runNow()
-        }
-      })
-    }
-
-    def render(state: State): VdomTag = {
-      <.div(
-        <.form(
-          ^.onSubmit ==> handleSubmit,
-          <.div(
-            ^.cls := "form-group",
-            <.label(
-              ^.htmlFor := "sqlArea",
-              "Enter SQL to be processed"
-            ),
-            <.textarea(
-              ^.cls := "form-control",
-              ^.id := "sqlArea",
-              ^.rows := 20,
-              ^.value := defVal, // TODO: Remove def val
-              ^.onChange ==> onAreaChange,
-              ^.required := true
-            )
-          ),
-          ReactSpinkit()(ReactSpinkit.props(SpinFoldingCube()))(),
-          <.div(
-            ^.cls := "form-group",
-            <.button(
-              ^.cls := "btn btn-primary",
-              "Send"
-            )
-          )
-        )
-      )
-    }
-  }
-
-  val defVal =
+  private val defVal =
     """
       |ET NAMES utf8;
       |SET time_zone = '+00:00';
@@ -144,4 +89,63 @@ object SqlFormComponent {
       |);
       |
     """.stripMargin
+
+  def apply(c: ProcessFormSuccessResponse => Unit) = component(Props(c))
+
+  case class State(textAreaValue: String, isFetching: Boolean)
+
+  case class Props(setProcessFormCallback: ProcessFormSuccessResponse => Unit)
+
+  class Backend($: BackendScope[Props, State]) {
+
+    def render(state: State): VdomTag = {
+      <.div(
+        <.form(
+          ^.onSubmit ==> handleSubmit,
+          <.div(
+            ^.cls := "form-group",
+            <.label(
+              ^.htmlFor := "sqlArea",
+              "Enter SQL to be processed"
+            ),
+            <.textarea(
+              ^.cls := "form-control",
+              ^.id := "sqlArea",
+              ^.rows := 20,
+              ^.value := defVal, // TODO: Remove def val
+              ^.onChange ==> onAreaChange,
+              ^.required := true
+            )
+          ),
+          if (state.isFetching) ReactSpinkit()(ReactSpinkit.props(SpinFoldingCube()))() else EmptyVdom,
+          <.div(
+            ^.cls := "form-group",
+            <.button(
+              ^.cls := "btn btn-primary",
+              "Send"
+            )
+          )
+        )
+      )
+    }
+
+    private def onAreaChange(e: ReactEventFromInput): Callback = {
+      $.setState(State(e.target.value, isFetching = false))
+    }
+
+    private def handleSubmit(e: ReactEventFromInput): Callback = {
+      e.preventDefault()
+
+
+      $.modState(s => State(s.textAreaValue, isFetching = true)).flatMap { // update fetching status
+        _ =>
+          $.state.map(s => AjaxClient[WiredApi].processSql(ProcessFormRequest(s.textAreaValue)).call().foreach { // create request
+            s: ProcessFormSuccessResponse => // handle response
+              $.modState(s => State(s.textAreaValue, isFetching = false)) // set state that it's fetching
+                .flatMap(_ => $.props.map(p => p.setProcessFormCallback(s)) // call setProcessFormCallback
+              ).runNow() // force run (scope is future callback)
+          })
+      }
+    }
+  }
 }
