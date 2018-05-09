@@ -1,10 +1,17 @@
 language: scala
-
 scala:
-  - 2.12.4
-
+- 2.12.4
 script:
-  - sbt clean coverage test coverageReport
-
+- sbt clean coverage test dist coverageReport
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+- bash <(curl -s https://codecov.io/bash)
+deploy:
+  skip_cleanup: true
+  provider: releases
+  api_key:
+    - secure: dU+f/MP+Xm6LgJhN5LlaDKM6l/D0QSaouV2A9EVaMlZV+mxXx9EDBM5/AIO2nDDXxd7wkGJiusDo6p+Jx+dveS/21tgnvM5evtMk3+ZwIu35hwp5iapoo2Z6bYvkCN96dMFNRY96L5F21pbrWbRRssaz00AWYr23YV5qlzcLF+z68Oo7umyY6QWVa6LBJgpsMr/E+9+D/uh2ace6TT03nPaRBD1QA/Sto2FKNcG92sqdJ3oo4QL1LVpp1/QiAxEnXAW17e/fzOn5UdVl/5a5SmugsFcebvBwqszUvWLjk+QGVby1Xjbv3iNwamzly9DMoUkQIRIQMi1KgOvBExY5kSIuAJ5yri0oxijDrK80spudL9YlBLJqQ8dMbfnrVu/nnXeArUBDkKB8yFX9bk3ATvhJIM1dUrzlPAU7MHR7UPZEIoTJnvO+SgVzSK3W0Z+DWYTBdLwkjOENrgjbP8YbytEpDeI12Z2EFEFFNrEPn6u3zza1dz0U2b/tr+6qb/wgZYpRiPbgIHoo0wQvKcw5uetxVJIrfyIXJA2BDIbEv7aFnrFedOIpXhjpQJ27P/Pc8I/KHQ2pm6beV1Yj34EeEPV8NgG3XRvfl0RSmp698LU9C6jPDUq2vOcL/itYL+hrYvr0yzw+sE/VwLDRv9NpFRY0dzePZ4OPJ49o1B0ZNUE=
+  file_glob: true
+  file: server/target/universal/scala-nette-form-generator-1.0-SNAPSHOT.zip
+  on:
+    tags: true
+    repo: jakub-tucek/scala-nette-form-generator

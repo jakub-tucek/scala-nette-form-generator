@@ -7,6 +7,8 @@ version in ThisBuild := "1.0-SNAPSHOT"
 
 scalaVersion in ThisBuild := "2.12.5"
 
+def inDevMode = sys.props.get("dev.mode").exists(value => value.equalsIgnoreCase("true"))
+
 lazy val root = (project in file("."))
   .aggregate(server)
   .settings(
@@ -18,8 +20,8 @@ lazy val root = (project in file("."))
 lazy val web = (project in file("web"))
   .settings(
     scalaJSUseMainModuleInitializer := true,
-    emitSourceMaps := true,
-    webpackConfigFile := Some(baseDirectory.value / "prod.webpack.config.js"),
+    emitSourceMaps := inDevMode,
+    webpackConfigFile := Some(baseDirectory.value / (if (inDevMode) "dev.webpack.config.js" else "prod.webpack.config.js")),
     libraryDependencies ++= Seq(
       "com.github.japgolly.scalajs-react" %%% "core" % scalajsReact,
       "com.github.japgolly.scalajs-react" %%% "extra" % scalajsReact,
