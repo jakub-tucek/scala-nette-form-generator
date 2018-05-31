@@ -1,0 +1,64 @@
+@import domain.sql.Table
+@(table: Table, name: String)
+
+/**
+ * Interface I@(name)Factory
+ * @@package App\Forms
+ */
+interface I@(name)Factory
+{
+    /**
+    * @@return @name
+    */
+    function create();
+}
+
+/**
+ * Class @(name)
+ * @@package App\Forms
+ */
+class @name extends BaseForm {
+
+
+    const TEMPLATE_DIRECTORY = "templates/@table.name";
+    const TEMPLATE_NAME = "@(table.name).latte";
+
+    /**
+     * Callback to be called when submit is successfully processed
+     * @@var callable
+     */
+    public $onDone;
+
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    /**
+     * Form success callback
+     * @@param Form $form
+     * @@param $values
+     */
+    public function processForm(Form $form, $values)
+    {
+        //TODO: This is generated template and needs to be implemented
+
+        if ($this->onDone) {
+            $this->onDone();
+        }
+    }
+
+    /**
+    * Creates form
+    * @@return UI\Form
+    */
+    protected function createComponentForm()
+    {
+        $form = new Form();
+
+        $form->addText()
+
+        $form->onSuccess[] = array($this, 'processForm');
+        return $form;
+    }
+}
