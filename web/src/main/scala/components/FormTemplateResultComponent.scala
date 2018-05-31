@@ -5,7 +5,7 @@ import japgolly.scalajs.react.component.Scala.Unmounted
 import japgolly.scalajs.react.vdom.HtmlTags
 import japgolly.scalajs.react.vdom.html_<^._
 import japgolly.scalajs.react.{BackendScope, Callback, ScalaComponent}
-import shared.domain.FormTemplateContainer
+import shared.domain.{FormTemplateContainer, LatteTemplateType, PhpTemplateType, TemplateType}
 import utils.ViewUtils
 
 /**
@@ -50,13 +50,18 @@ object FormTemplateResultComponent extends HtmlTags {
               })
           ),
           <.div(
-            ReactHighlight()(ReactHighlight.props())(
+            ReactHighlight()(ReactHighlight.props(getLanguage(l.templateType)))(
               l.templates(s.activeTabNo.getOrElse(0)).templateContent
             )
           )
         )
       }
       case _ => <.div()
+    }
+
+    private def getLanguage(t: TemplateType): String = t match {
+      case s: LatteTemplateType => "html"
+      case l: PhpTemplateType => "php"
     }
 
     private def handleTabClick(id: Int): Callback = {

@@ -15,3 +15,7 @@ case class ColumnMaxLength(length: Integer) extends ColumnOption
 case class ColumnEnumTypes(types: List[String]) extends ColumnOption
 
 case class ColumnUnrecognized(str: String) extends ColumnOption
+
+
+object ColumnEnumTypes {
+}

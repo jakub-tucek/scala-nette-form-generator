@@ -15,7 +15,7 @@ object SqlResultComponent extends HtmlTags {
 
   private val initialState: State = State(List(
     Tab(0, "Latte template", (res: ProcessFormSuccessResponse) => FormTemplateResultComponent.apply(res.latteTemplates)),
-    Tab(1, "Nette generator", (res: ProcessFormSuccessResponse) => "Not implemented")
+    Tab(1, "Nette factory generator", (res: ProcessFormSuccessResponse) => FormTemplateResultComponent.apply(res.codeTemplates))
   ), 0)
   private val component = ScalaComponent
     .builder[Props]("SqlResultComponent")
@@ -27,7 +27,7 @@ object SqlResultComponent extends HtmlTags {
 
   case class Props(processFormResponse: ProcessFormSuccessResponse)
 
-  case class Tab(id: Int, name: String, childrenBuilder: (ProcessFormSuccessResponse) => TagMod)
+  case class Tab(id: Int, name: String, childrenBuilder: ProcessFormSuccessResponse => TagMod)
 
   case class State(tabs: List[Tab], activeTabId: Int)
 

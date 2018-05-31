@@ -31,12 +31,5 @@ object ReactHighlight {
     p
   }
 
-  def props(): Props = {
-    val p = (new js.Object).asInstanceOf[Props]
-    p.innerHTML = false
-    p.language = "javascript"
-    p
-  }
-
   def apply() = JsComponent[Props, Children.Varargs, Null](RawComponent)
 }
