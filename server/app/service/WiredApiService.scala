@@ -3,7 +3,7 @@ package service
 import java.time.LocalDateTime
 
 import javax.inject.{Inject, Singleton}
-import shared.domain.{ProcessFormRequest, ProcessFormSuccessResponse}
+import shared.domain.{ProcessFormRequest, ProcessFormResponse}
 import shared.service.WiredApi
 import shared.utils.Implicits
 
@@ -19,6 +19,6 @@ class WiredApiService @Inject()(val formGeneratorService: FormGeneratorService)
 
   override def now(): Future[LocalDateTime] = LocalDateTime.now().asFuture
 
-  override def processSql(sqlRequest: ProcessFormRequest): Future[ProcessFormSuccessResponse] = formGeneratorService.processSql(sqlRequest).asFuture
+  override def processSql(sqlRequest: ProcessFormRequest): Future[ProcessFormResponse] = formGeneratorService.processSql(sqlRequest).asFuture
 }
 

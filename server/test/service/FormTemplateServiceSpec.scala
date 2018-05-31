@@ -7,7 +7,7 @@ import org.scalatest.{FlatSpec, Matchers}
   *
   * @author Jakub Tucek
   */
-class FormLatteTemplateServiceSpec extends FlatSpec with Matchers {
+class FormTemplateServiceSpec extends FlatSpec with Matchers {
 
   "FormTemplateSericeSpec" should "Convert table to correct html" in {
     val service = new FormTemplateService
@@ -15,7 +15,7 @@ class FormLatteTemplateServiceSpec extends FlatSpec with Matchers {
 
     val tables = List(Table("my_table", List(TableColumn("col", ColumnVarchar(), List()))))
 
-    val result = service.createTemplates(tables)
+    val result = service.createLatteTemplates(tables)
 
     result.templates should have size 1
 

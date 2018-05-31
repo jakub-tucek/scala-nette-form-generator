@@ -1,11 +1,13 @@
 package shared.utils
 
 import shared.model.WiredApiModel.ApiResult
-import scala.concurrent.Future
-import shared.model.WiredApiModel.ApiResult
 
+import scala.concurrent.Future
+
+// Implicits trait
 trait Implicits {
 
+  // extension generics for easier working with future
   implicit class ExtGeneric[T](t: T) {
 
     def asFuture: Future[T] = Future.successful(t)
@@ -21,4 +23,5 @@ trait Implicits {
 
 }
 
+// companion object
 object Implicits extends Implicits

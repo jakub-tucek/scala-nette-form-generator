@@ -5,16 +5,17 @@ import japgolly.scalajs.react.component.Scala.Unmounted
 import japgolly.scalajs.react.vdom.HtmlTags
 import japgolly.scalajs.react.vdom.html_<^._
 import japgolly.scalajs.react.{BackendScope, Callback, ScalaComponent}
-import shared.domain.FormLatteTemplateList
+import shared.domain.FormTemplateContainer
 import utils.ViewUtils
 
 /**
+  * Component responsible for displaying template result
   *
   * @author Jakub Tucek
   */
 object FormTemplateResultComponent extends HtmlTags {
 
-  case class Props(templateList: FormLatteTemplateList)
+  def apply(p: FormTemplateContainer): Unmounted[Props, State, Backend] = component(Props(p))
 
   private val component =
     ScalaComponent.builder[Props]("FormTemplateResultComponent")
@@ -22,14 +23,14 @@ object FormTemplateResultComponent extends HtmlTags {
       .renderBackend[Backend]
       .build
 
-  def apply(p: FormLatteTemplateList): Unmounted[Props, State, Backend] = component(Props(p))
+  case class Props(templateList: FormTemplateContainer)
 
   case class State(activeTabNo: Option[Int])
 
   class Backend($: BackendScope[Props, State]) {
 
     def render(p: Props, s: State): VdomElement = p.templateList match {
-      case l: FormLatteTemplateList => {
+      case l: FormTemplateContainer => {
         <.div(
           <.ul(
             ^.cls := "nav nav-tabs",

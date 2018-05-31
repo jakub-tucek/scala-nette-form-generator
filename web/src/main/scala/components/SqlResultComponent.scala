@@ -14,7 +14,7 @@ import utils.ViewUtils
 object SqlResultComponent extends HtmlTags {
 
   private val initialState: State = State(List(
-    Tab(0, "Latte template", (res: ProcessFormSuccessResponse) => FormTemplateResultComponent.apply(res.formTemplateResult)),
+    Tab(0, "Latte template", (res: ProcessFormSuccessResponse) => FormTemplateResultComponent.apply(res.latteTemplates)),
     Tab(1, "Nette generator", (res: ProcessFormSuccessResponse) => "Not implemented")
   ), 0)
   private val component = ScalaComponent

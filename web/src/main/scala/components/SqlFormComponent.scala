@@ -5,7 +5,7 @@ import autowire._
 import japgolly.scalajs.react.vdom.html_<^._
 import japgolly.scalajs.react.{Callback, _}
 import services.AjaxClient
-import shared.domain.{ProcessFormRequest, ProcessFormSuccessResponse}
+import shared.domain.{ProcessFormFailResponse, ProcessFormRequest, ProcessFormResponse, ProcessFormSuccessResponse}
 import shared.service.WiredApi
 
 /**
@@ -92,7 +92,7 @@ object SqlFormComponent {
 
   def apply(c: ProcessFormSuccessResponse => Unit) = component(Props(c))
 
-  case class State(textAreaValue: String, isFetching: Boolean)
+  case class State(textAreaValue: String, isFetching: Boolean, error: String = "")
 
   case class Props(setProcessFormCallback: ProcessFormSuccessResponse => Unit)
 
@@ -137,14 +137,18 @@ object SqlFormComponent {
       e.preventDefault()
 
       $.modState(s => State(s.textAreaValue, isFetching = true)).flatMap { // update fetching status
-        _ =>
-          $.state.map(s => AjaxClient[WiredApi].processSql(ProcessFormRequest(s.textAreaValue)).call().foreach { // create request
-            s: ProcessFormSuccessResponse => // handle response
-              $.modState(s => State(s.textAreaValue, isFetching = false)) // set state that it's fetching
-                .flatMap(_ => $.props.map(p => p.setProcessFormCallback(s)) // call setProcessFormCallback
-              ).runNow() // force run (scope is future callback)
-          })
+        _ => $.state.map(s => AjaxClient[WiredApi].processSql(ProcessFormRequest(s.textAreaValue)).call().foreach(handleResponse))
       }
     }
+
+    private def handleResponse(response: ProcessFormResponse) =
+      response match {
+        case s: ProcessFormSuccessResponse => // handle response
+          $.modState(s => State(s.textAreaValue, isFetching = false)) // set state that it's fetching
+            .flatMap(_ => $.props.map(p => p.setProcessFormCallback(s))) // call setProcessFormCallback
+            .runNow() // force run (scope is future callback)
+        case ProcessFormFailResponse(message) => $.modState(s => State(s.textAreaValue, isFetching = false, error = message))
+      }
   }
+
 }

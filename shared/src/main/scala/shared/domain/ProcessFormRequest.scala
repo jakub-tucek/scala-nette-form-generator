@@ -2,8 +2,6 @@ package shared.domain
 
 import io.circe.generic.JsonCodec
 
-/**
-  *
-  * @author Jakub Tucek
-  */
+// process form request
+// contains user input
 @JsonCodec case class ProcessFormRequest(sqlContent: String)
