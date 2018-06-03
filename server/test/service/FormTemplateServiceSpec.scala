@@ -19,6 +19,6 @@ class FormTemplateServiceSpec extends FlatSpec with Matchers {
 
     result.templates should have size 1
 
-    result.templates.map(_.templateName) should contain("my_table")
+    result.templates.map(_.templateName) should contain("MyTable")
   }
 }
