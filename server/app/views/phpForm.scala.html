@@ -1,7 +1,7 @@
 @import domain.sql.Table
-@import domain.sql._
 
-@(table: Table, name: String)
+
+@(table: Table, name: String, formDefinition: String)
 
 /**
  * Interface I@(name)Factory
@@ -59,27 +59,8 @@ class @name extends BaseForm {
     {
         $form = new Form();
 
-    @for(col <- table.cols) {
-        @col.colType match {
-            case ColumnInt()|ColumnVarchar()|ColumnTimestamp() => {$form->addText("@col.name", "@col.name")}
-            case ColumnTinyInt() => {$form->addCheckbox("@col.name", "@col.name")}
-            case ColumnEnum() => {$form->addSelect("@col.name", "@col.name", @col.options.find(_.isInstanceOf[ColumnEnumTypes]).getOrElse(ColumnEnumTypes(List())) match {
-                case a: ColumnEnumTypes => {
-                    [
-                    @for(t <- a.types){"@t"@if(!a.types.last.equals(t)) {,}}
-                    ])}
-                case _ => {)}
-                }}
-            case ColumnText() => {$form->addTextArea("@col.name", "@col.name")}
-            case _ => {NUTING}
-        }
-        @col.colType match {
-            case ColumnInt() => {   ->addRule(Form::NUMERIC, "@col.name must be a number")}
-            case _ => {}
-        }
-        @for(opt <- col.options) {
-        }
-    }
+@Html(formDefinition)
+
         $form->onSuccess[] = array($this, 'processForm');
         return $form;
     }
