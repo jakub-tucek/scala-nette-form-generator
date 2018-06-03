@@ -8,7 +8,7 @@ sealed trait ColumnOption
 
 case class ColumnDefaultValueString(value: String) extends ColumnOption
 
-case class ColumnRequired() extends ColumnOption
+case class ColumnRequired(value: Boolean = true) extends ColumnOption
 
 case class ColumnMaxLength(length: Integer) extends ColumnOption
 
